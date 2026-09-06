@@ -3,31 +3,173 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Mi página</title>
-
-    <!-- Bootstrap CSS -->
-    <link 
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
-        rel="stylesheet">
-
-    <!-- Tu CSS -->
-    <link rel="stylesheet" href="css/estilos.css">
-</head>
-
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+            <title>Mi página</title>
+            
+                <!-- Bootstrap CSS -->
+                    <link 
+                            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+                                    rel="stylesheet">
+                                    
+                                        <!-- Tu CSS -->
+                                            <link rel="stylesheet" href="css/estilos.css">
+                                            </head>
+                                            
+                                            <body></body>>
 <body>
 
-    <!-- Aquí va tu página -->
-    <div class="container">
-        <h1 class="text-primary">Hola Bootstrap</h1>
+    <!-- Barra superir de la página -->
+    <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+        <div class="container">
 
-        <button class="btn btn-primary">
-            Mi botón
-        </button>
-        <a href="login.html"> <button class="btn btn-primary" > Iniciar Sesion </button> </a> 
-    </div>
+            <a class="navbar-brand" href="index.html">
+                XD
+            </a>
 
+            <button class="navbar-toggler" 
+                    type="button" 
+                    data-bs-toggle="collapse" 
+                    data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+
+                <ul class="navbar-nav ms-auto">
+
+                    <li class="nav-item">
+                        <a class="nav-link active" href="index.html">
+                            Inicio
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="btn btn-primary ms-lg-2" href="login.html">
+                            Iniciar sesión
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <main>
+
+        <section class="container py-5">
+
+            <div class="row align-items-center">
+
+                <div class="col-md-6">
+
+                    <h1 class="display-4 fw-bold">
+                        Bienvenido a mi página
+                    </h1>
+
+                    <p class="lead">
+                        Esta es la página principal de nuestro proyecto.
+                    </p>
+
+                    <a href="login.html" class="btn btn-primary btn-lg">
+                        Iniciar sesión
+                    </a>
+
+                </div>
+
+                <div class="col-md-6 text-center">
+
+                    <div class="bg-light p-5 rounded">
+                        <h2>Contenido</h2>
+                        <p>
+                            Aquí podemos colocar una imagen,
+                            información u otro contenido.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tarjetas -->
+        <section class="container py-5">
+
+            <h2 class="text-center mb-4">
+                Nuestros servicios
+            </h2>
+
+            <div class="row">
+
+                <div class="col-md-4 mb-3">
+
+                    <div class="card h-100">
+
+                        <div class="card-body">
+
+                            <h5 class="card-title">
+                                Servicio 1
+                            </h5>
+
+                            <p class="card-text">
+                                Descripción del servicio.
+                            </p>
+
+                            <a href="#" class="btn btn-primary">
+                                Ver más
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-4 mb-3">
+
+                    <div class="card h-100">
+
+                        <div class="card-body">
+
+                            <h5 class="card-title">
+                                Servicio 2
+                            </h5>
+
+                            <p class="card-text">
+                                Descripción del servicio.
+                            </p>
+
+                            <a href="#" class="btn btn-primary">
+                                Ver más
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-4 mb-3">
+
+                    <div class="card h-100">
+
+                        <div class="card-body">
+
+                            <h5 class="card-title">
+                                Servicio 3
+                            </h5>
+
+                            <p class="card-text">
+                                Descripción del servicio.
+                            </p>
+
+                            <a href="#" class="btn btn-primary">
+                                Ver más
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
 
     <!-- Bootstrap JavaScript -->
     <script 
