@@ -13,12 +13,12 @@
         rel="stylesheet">
 
     <!-- Tu CSS -->
-    <link rel="stylesheet" href="css/estilos.css">
+    <link rel="stylesheet" href="CSS/estilos.css">
 </head>
 
 <body>
- <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
-        <div class="container">
+ <nav class="navbar navbar-expand-lg navbar-dark" >
+        <div class="container-fluid">
 
             <a class="navbar-brand" href="index.html">
                 Hourtz
@@ -33,27 +33,26 @@
 
 <form>
 <div class="d-flex justify-content-center">  <!-- Esta linea centra el contenido en cuanto a posicion horizontal -->
-        <div class="login" id="register" class="card text-center mb-3" vstyle="width: 18rem;">  
-                <h2 class="card-title"> Registrarse </h2> 
+        <div id="register" class="register card text-center" style="width: 25rem;">  
+                <h2 class="card-title"> Creando cuenta </h2> 
                 <label for="nombre" class="card-text"> Nombre: </label> <br> 
-                <input type="text" id="nombre" required> <br>
+                <input class="form-control" type="text" id="nombre" required> <br>
                 <label for="user" class="card-text"> Usuario: </label> <br>
-                <input type="text" id="user" required> <br>
+                <input class="form-control" type="text" id="user" required> <br>
                 <label for="email" class="card-text"> Correo: </label> <br>
-                <input type="email" id="email" required> <br> 
+                <input class="form-control" type="email" id="email" required> <br> 
                 <label for="telefono"> Teléfono: </label> <br>
-                <input type="tel" id="telefono" required> <br>
+                <input class="form-control" type="tel" id="telefono" required> <br>
                 <label for="password"> Contraseña: </label> <br> 
-                <input type="password" id ="contraseña" required minlength="8"> <br> 
+                <input class="form-control" type="password" id ="contraseña" required minlength="8"> <br> 
                 <label for="contraseñaC"> Confirmar contraseña: </label> <br>
-                <input type="password" id="contraseñaC" required minlength="8"> <br>  
+                <input class="form-control" type="password" id="contraseñaC" required minlength="8"> <br>  
                 <p id="alerta"></p>
                 <input type="submit" value="Registrarse" id="Registro" class="btn btn-dark"> 
                 <p> Ya tienes cuenta? <a href="login.html"> Inicia sesión </a> </p>
     </div> 
 </div>
 </form>
-
     <!-- Bootstrap JavaScript -->
     <script 
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js">

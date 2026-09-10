@@ -1,0 +1,18 @@
+.navbar {
+    background-color: rgb(0, 0, 0) ;
+    padding: 10px;
+}
+.login {
+    width: 400px;
+    padding: 20px;
+    user-select: none;
+}
+.register{
+    width: 400px;
+    padding: 15px;
+    user-select: none;
+
+}
+.button {
+    background-color: rgb(0, 125, 235);
+}
