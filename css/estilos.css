@@ -8,6 +8,7 @@
     border-radius: 20px;
 }
 #register{
+    text-align: left;
     align-items: left;
     padding: 15px;
     user-select: none;
