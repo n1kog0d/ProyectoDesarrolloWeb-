@@ -5,13 +5,13 @@
 .login { 
     padding: 30px;
     user-select: none;
-    border-radius: 25px;
+    border-radius: 20px;
 }
 #register{
     align-items: left;
     padding: 15px;
     user-select: none;
-    border-radius: 25px;
+    border-radius: 20px;
     
 }
 .button {
