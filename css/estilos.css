@@ -78,6 +78,7 @@ body {
     user-select: none;
     border-radius: 20px;
     backdrop-filter: blur(10px);
+    
 }
 
 #register {
@@ -89,6 +90,7 @@ body {
     user-select: none;
     border-radius: 20px;
     backdrop-filter: blur(10px);
+    
 }
 
 
