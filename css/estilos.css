@@ -54,6 +54,21 @@ body {
     transform: translateY(-2px);
 }
 
+.d-flex{
+    display: flex;
+    justify-content: space-between;
+    weight: bold;
+    width: 50%;
+}
+
+.button:hover, 
+.btn-primary:hover, 
+.btn-outline-primary:hover {
+    background-color: var(--accent) ;
+    color: #ffffff ;
+    transform: translateY(-2px);
+}
+
 
 .login { 
     background-color: rgba(36, 155, 179, 0.226);
