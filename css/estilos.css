@@ -1,24 +1,90 @@
-.navbar {
-    background-color: rgb(42, 16, 103);
-    padding: 10px;
+
+:root {
+    --text: rgb(226, 244, 249);          
+    --background: rgb(3, 13, 16);      
+    --primary: rgb(130, 214, 231);     
+    --secondary: rgb(25, 35, 130);       
+    --accent: rgb(77, 49, 216);         
+    --borde: rgba(255, 255, 255, 0.15);  
+    --btn-text: rgb(13, 8, 18);         
+    --nav-bg: rgb(21, 72, 114);           
 }
+
+
+body {
+    background-color: var(--background) ;
+    color: var(--text) ;
+    min-height: 100vh;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+
+.navbar {
+    background-color: var(--nav-bg) ;
+    padding: 10px 20px;
+    border-bottom: 1px solid var(--borde);
+    backdrop-filter: blur(10px);
+}
+
+.navbar-brand, .navbar a {
+    color: rgba(243, 238, 247, 0.932) ;
+    font-weight: 700;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+
+.button, 
+.btn-primary, 
+.btn-outline-primary {
+    background-color: var(--primary) ;
+    color: var(--btn-text) ;
+    border: none ;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+.button:hover, 
+.btn-primary:hover, 
+.btn-outline-primary:hover {
+    background-color: var(--accent) ;
+    color: #ffffff ;
+    transform: translateY(-2px);
+}
+
+
 .login { 
+    background-color: rgba(36, 155, 179, 0.226);
+    border: 1px solid var(--borde);
+    color: var(--text);
     padding: 30px;
     user-select: none;
     border-radius: 20px;
+    backdrop-filter: blur(10px);
 }
-#register{
+
+#register {
+    background-color: rgba(36, 155, 179, 0.226);
+    border: 1px solid var(--borde);
+    color: var(--text);
     text-align: left;
-    align-items: left;
     padding: 15px;
     user-select: none;
     border-radius: 20px;
-    
+    backdrop-filter: blur(10px);
 }
-.button {
-    background-color: rgb(0, 125, 235);
-}
-#carouselExampleAutoplaying{
+
+
+#carouselExampleAutoplaying {
     max-width: 900px;
     margin: 0 auto;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+.bg-light{
+    color: black;
+
 }
