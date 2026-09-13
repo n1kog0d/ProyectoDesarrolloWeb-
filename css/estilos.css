@@ -1,6 +1,20 @@
 .navbar {
-    background-color: rgb(42, 16, 103);
+    background-color: rgb(0, 0, 0);
     padding: 10px;
+}
+.d-flex{
+    display: flex;
+    justify-content: space-between;
+    weight: bold;
+    width: 50%;
+}
+.navbar-brand {
+    color: white;
+    font-size: 30px;
+    font-weight: bold;
+}
+body{
+    background-color: rgb(27, 27, 27);
 }
 .login { 
     padding: 30px;
