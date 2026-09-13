@@ -22,16 +22,14 @@ let currentButton = null;
 const playButtons = document.querySelectorAll('.play-btn');
 
 playButtons.forEach(button => {
-  button.addEventListener('click', () => {
+  button.addEventListener('click', async () => {
     const audioSrc = button.getAttribute('data-audio');
-    
-    if (currentAudio && currentAudio.src.endsWith(audioSrc)) {
+
+    if (currentAudio && currentButton === button) {
       if (currentAudio.paused) {
-        currentAudio.play();
-        button.textContent = 'Pausar';
+        await currentAudio.play();
       } else {
         currentAudio.pause();
-        button.textContent = 'Escuchar';
       }
       return;
     }
@@ -44,19 +42,34 @@ playButtons.forEach(button => {
       }
     }
 
-    currentAudio = new Audio(audioSrc);
+    const audio = new Audio(audioSrc);
+    currentAudio = audio;
     currentButton = button;
 
-    currentAudio.play().catch(err => {
-      console.error("Playback failed. Verify file path and format:", err);
+    audio.addEventListener('play', () => {
+      button.textContent = 'Pausar';
     });
-    
-    button.textContent = 'Pausar';
 
-    currentAudio.addEventListener('ended', () => {
+    audio.addEventListener('pause', () => {
       button.textContent = 'Escuchar';
-      currentAudio = null;
-      currentButton = null;
     });
+
+    audio.addEventListener('ended', () => {
+      button.textContent = 'Escuchar';
+      if (currentAudio === audio) {
+        currentAudio = null;
+        currentButton = null;
+      }
+    });
+
+    try {
+      await audio.play();
+    } catch (err) {
+      console.error("Playback failed. Verify file path and format:", err);
+      if (currentAudio === audio) {
+        currentAudio = null;
+        currentButton = null;
+      }
+    }
   });
 });
