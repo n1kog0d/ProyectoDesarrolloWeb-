@@ -31,28 +31,31 @@
     <br> 
     <!-- Tu contenido -->
 
-<form>
+
 <div class="d-flex justify-content-center w-100">  <!-- Esta linea centra el contenido en cuanto a posicion horizontal -->
         <div id="register" class="register card " style="width: 450px;">  
                 <h2 class="card-title text-center"> Creando cuenta </h2> 
+
+            <form onsubmit="mostrarAlertaregister(event)">
                 <label for="nombre" class="card-text"> Nombre y apellido: </label>  
                 <input class="form-control" type="text" id="nombre" minlength="3" maxlength="50" required> <br>
                 <label for="user" class="card-text"> Usuario: </label> 
                 <input class="form-control" type="text" id="user" minlength="3" maxlength="14" required> <br>
                 <label for="email" class="card-text"> Correo: </label> 
-                <input class="form-control" type="email" id="email" placeholder="abcde@gmail.com (solo gmail)" pattern=".+@gmail\.com" required> <br> 
+                <input class="form-control" type="email" id="email" placeholder="abcde@gmail.com " pattern=".+@gmail\.com" required> <br> 
                 <label for="telefono"> Teléfono: </label> 
-                <input class="form-control" type="tel" id="telefono" placeholder="Ejemplo: 123456789"pattern="[0-9]{9}" required> <br>
+                <input class="form-control" type="tel" id="telefono" placeholder="Ejemplo:(+56 9) 12345678"pattern="[0-9]{9}" required> <br>
                 <label for="password"> Contraseña (mínimo 8 caracteres): </label> 
                 <input class="form-control" type="password" id ="contraseña" required minlength="8"> <br> 
                 <label for="contraseñaC"> Confirmar contraseña: </label> 
                 <input class="form-control" type="password" id="contraseñaC" required> <br>  
                 <p id="alerta"></p>
-                <input type="submit" value="Registrarse" id="Registro" class="btn btn-dark"> 
+                <button type="submit" class="btn btn-dark">Registro</button>  
                 <p> Ya tienes cuenta? <a href="login.html"> Inicia sesión </a> </p>
+            </form>
     </div> 
 </div>
-</form>
+
     <!-- Bootstrap JavaScript -->
     <script 
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js">
@@ -61,5 +64,16 @@
     <!-- Tu JavaScript -->
     <script src="../javascript/funciones.js"></script>
 
+ <div class="toast-container position-fixed bottom-0 end-0 p-3">
+  <div id="alertaExitoregister" class="toast text-bg-success" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header">
+      <strong class="me-auto">¡Éxito!</strong>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body">
+      Cuenta registrada correctamente. Redirigiendo...
+    </div>
+  </div>
+</div>
 </body>
 </html>

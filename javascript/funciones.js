@@ -73,3 +73,24 @@ playButtons.forEach(button => {
     }
   });
 });
+
+//redirect inicio de sesion
+function mostrarAlertalogin(event) {
+    event.preventDefault();
+    const toastHTML = document.getElementById('alertaExitologin');
+    const toast = new bootstrap.Toast(toastHTML);
+    toast.show();
+    setTimeout(function() {  
+        window.location.href = 'index.html'; 
+    }, 2000); 
+  }
+//redirect registro de cuenta
+  function mostrarAlertaregister(event) {
+    event.preventDefault();
+    const toastHTML = document.getElementById('alertaExitoregister');
+    const toast = new bootstrap.Toast(toastHTML);
+    toast.show();
+    setTimeout(function() {  
+        window.location.href = 'index.html'; 
+    }, 2000); 
+  }
