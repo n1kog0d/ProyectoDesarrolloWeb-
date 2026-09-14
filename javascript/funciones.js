@@ -43,6 +43,7 @@ playButtons.forEach(button => {
     }
 
     const audio = new Audio(audioSrc);
+    audio.volume = 0.2;
     currentAudio = audio;
     currentButton = button;
 
