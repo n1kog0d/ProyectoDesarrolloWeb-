@@ -78,7 +78,7 @@ body {
     user-select: none;
     border-radius: 20px;
     backdrop-filter: blur(10px);
-    
+    margin-top: 30px;
 }
 
 #register {
@@ -90,6 +90,7 @@ body {
     user-select: none;
     border-radius: 20px;
     backdrop-filter: blur(10px);
+     margin-top: 30px;
 }
 
 
@@ -103,4 +104,12 @@ body {
 .bg-light{
     color: black;
 
+}
+
+#grafico{
+    
+    text-align: center;
+    margin-top: 10px;
+    margin-left: 90px;
+    font-size: 15px;
 }
