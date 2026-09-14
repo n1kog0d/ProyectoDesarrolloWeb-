@@ -104,3 +104,13 @@ body {
     color: black;
 
 }
+.tarjeta-musica {
+    background-color: #181818;
+    color: #ffffff;
+    border: 1px solid #383838;
+    border-radius: 12px;
+}
+
+.tarjeta-musica .card-text {
+    color: #b3b3b3;
+}
