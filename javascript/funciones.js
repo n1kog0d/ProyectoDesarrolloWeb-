@@ -38,7 +38,7 @@ playButtons.forEach(button => {
       currentAudio.pause();
       currentAudio.currentTime = 0;
       if (currentButton) {
-        currentButton.textContent = 'Escuchar';
+        currentButton.textContent = 'Probar';
       }
     }
 
@@ -52,11 +52,11 @@ playButtons.forEach(button => {
     });
 
     audio.addEventListener('pause', () => {
-      button.textContent = 'Escuchar';
+      button.textContent = 'Probar';
     });
 
     audio.addEventListener('ended', () => {
-      button.textContent = 'Escuchar';
+      button.textContent = 'Probar';
       if (currentAudio === audio) {
         currentAudio = null;
         currentButton = null;
