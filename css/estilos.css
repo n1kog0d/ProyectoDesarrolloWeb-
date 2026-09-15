@@ -122,7 +122,6 @@ body {
 
 #foto_perfil{
     border: 1px solid var(--borde);
-    margin-left: 56px;
     border-width: 10px;
     border-radius: 500px;
     user-select:  none;
