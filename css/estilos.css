@@ -58,13 +58,6 @@ body {
     transform: translateY(-2px);
 }
 
-.d-flex{
-    display: flex;
-    justify-content: space-between;
-    weight: bold;
-    width: 50%;
-}
-
 .button:hover, 
 .btn-primary:hover, 
 .btn-outline-primary:hover {
@@ -112,10 +105,8 @@ body {
 }
 
 #grafico{
-    
     text-align: center;
     margin-top: 10px;
-    margin-left: 90px;
     font-size: 15px;
 }
 .tarjeta-musica {
