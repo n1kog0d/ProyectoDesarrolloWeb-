@@ -20,19 +20,23 @@ body {
 
 
 .navbar {
-    background-color: var(--nav-bg) ;
+    background-color: #181818 !important;
     padding: 10px 20px;
-    border-bottom: 1px solid var(--borde);
+    border-bottom: 1px solid #383838;
     backdrop-filter: blur(10px);
 }
 
 .navbar-brand, .navbar a {
-    color: rgba(243, 238, 247, 0.932) ;
+    color:#ffffff !important ;
     font-weight: 700;
     font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
-
-
+.navbar-nav .nav-link {
+    color: #b3b3b3 !important;
+}
+.navbar-nav .nav-link:hover {
+    color: #ffffff !important;
+}
 .button, 
 .btn-primary, 
 .btn-outline-primary {
