@@ -20,7 +20,7 @@ body {
 
 
 .navbar {
-    background-color: #181818 !important;
+    background-color: var(--nav-bg)  ;
     padding: 10px 20px;
     border-bottom: 1px solid #383838;
     backdrop-filter: blur(10px);
