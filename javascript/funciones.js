@@ -1,4 +1,4 @@
-// Register
+// registro de cuenta
 const contraseña = document.getElementById("contraseña");
 const Confcontraseña = document.getElementById("contraseñaC");
 const alerta = document.getElementById("alerta");
@@ -75,7 +75,7 @@ playButtons.forEach(button => {
   });
 });
 
-//redirect inicio de sesion
+//rediregir a inicio de sesion
 function mostrarAlertalogin(event) {
     event.preventDefault();
     const toastHTML = document.getElementById('alertaExitologin');
@@ -85,7 +85,7 @@ function mostrarAlertalogin(event) {
         window.location.href = 'index.html'; 
     }, 2000); 
   }
-//redirect registro de cuenta
+//rediregir a registro de cuenta
   function mostrarAlertaregister(event) {
     event.preventDefault();
     const toastHTML = document.getElementById('alertaExitoregister');
