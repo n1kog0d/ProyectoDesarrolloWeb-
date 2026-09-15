@@ -128,3 +128,10 @@ body {
 .tarjeta-musica .card-text {
     color: #b3b3b3;
 }
+
+#foto_perfil{
+    border: 1px solid var(--borde);
+    margin-left: 56px;
+    border-width: 10px;
+    border-radius: 500px;
+}
