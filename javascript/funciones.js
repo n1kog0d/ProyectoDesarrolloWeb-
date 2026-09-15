@@ -95,3 +95,25 @@ function mostrarAlertalogin(event) {
         window.location.href = 'index.html'; 
     }, 2000); 
   }
+  // mantener nombre de usuario en el registro
+  // Registro
+let user = document.getElementById("user");
+if (user != null) {
+    if (sessionStorage.getItem("autosave")) {
+        user.value = sessionStorage.getItem("autosave");
+    }
+    user.addEventListener("change", () => {
+        sessionStorage.setItem("autosave", user.value);
+    });
+}
+// Cambio en la navbar
+const userName = document.getElementById("userName");
+if (userName != null) {
+    let usuarioGuardado = sessionStorage.getItem("autosave");
+    if (usuarioGuardado != null) {
+        userName.textContent = usuarioGuardado;
+    } 
+    else {
+        userName.textContent = "Perfil";
+    }
+} 
