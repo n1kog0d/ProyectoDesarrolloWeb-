@@ -134,4 +134,5 @@ body {
     margin-left: 56px;
     border-width: 10px;
     border-radius: 500px;
+    user-select:  none;
 }
