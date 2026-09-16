@@ -1,19 +1,30 @@
 
 :root {
-    --text: rgb(226, 244, 249);          
-    --background: rgb(3, 13, 16);      
-    --primary: rgb(130, 214, 231);     
-    --secondary: rgb(25, 35, 130);       
-    --accent: rgb(77, 49, 216);         
-    --borde: rgba(255, 255, 255, 0.15);  
-    --btn-text: rgb(13, 8, 18);         
-    --nav-bg: rgb(21, 72, 114);           
+    /* Colores base */
+    --background: rgb(3, 13, 16);           
+    --text-principal: rgb(226, 244, 249);  
+    --text-secundario: #b3b3b3;            
+    --text-blanco: #ffffff;                
+    
+    /* Colores de marca */
+    --primary: rgb(130, 214, 231);          
+    --accent: rgb(77, 49, 216);             
+    --btn-text: rgb(13, 8, 18);             
+    
+    /* Fondos de elementos (Navbar, Tarjetas) */
+    --nav-bg: rgb(21, 72, 114);             
+    --panel-bg-fuerte: rgba(36, 155, 179, 0.226);
+    --panel-bg-suave: rgba(36, 155, 179, 0.15);   
+    
+    /* Bordes */
+    --borde-claro: rgba(255, 255, 255, 0.15); 
+    --borde-oscuro: #383838;                  
 }
 
 
 body {
     background-color: var(--background) ;
-    color: var(--text) ;
+    color: var(--text-principal) ;
     min-height: 100vh;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
@@ -22,20 +33,20 @@ body {
 .navbar {
     background-color: var(--nav-bg)  ;
     padding: 10px 20px;
-    border-bottom: 1px solid #383838;
+    border-bottom: 1px solid var(--borde-oscuro);
     backdrop-filter: blur(10px);
 }
 
 .navbar-brand, .navbar a {
-    color:#ffffff !important ;
+    color:var(--text-blanco) !important ;
     font-weight: 700;
     font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 .navbar-nav .nav-link {
-    color: #b3b3b3 !important;
+    color: var(--text-secundario) !important;
 }
 .navbar-nav .nav-link:hover {
-    color: #ffffff !important;
+    color: var(--text-blanco) !important;
 }
 .button, 
 .btn-primary, 
@@ -120,12 +131,27 @@ body {
     color: #b3b3b3;
 }
 
+#cardindex{
+    background-color: var(--text);
+}
+
 #foto_perfil{
     border: 1px solid var(--borde);
     border-width: 10px;
     border-radius: 500px;
     user-select:  none;
 }
-#cardindex{
-    background-color: var(--text);
+
+#biography{
+    background-color: var(--panel-bg-fuerte);
+    border: 1px solid var(--borde-claro);
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+}
+
+#perfilpreferencias{
+    background-color: var(--panel-bg-suave);
+    border: 1px solid var(--borde-claro);
+    border-radius: 15px;
+    backdrop-filter: blur(5px);
 }
