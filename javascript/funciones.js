@@ -172,7 +172,7 @@ if (btnGuardarPerfil != null) {
     });
 }
 
-//Cargar datos al perfil f5
+//Cargar datos al perfil
 const imagenVisual = document.getElementById("imagen_perfil_visual");
 const sobreMiVisual = document.getElementById("sobre_mi_visual");
 if (imagenVisual != null) {
