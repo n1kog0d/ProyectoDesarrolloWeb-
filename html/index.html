@@ -26,7 +26,6 @@
             </a>
             <form class="d-flex" role="search">
             <input class="form-control me-2" type="search" placeholder="Buscar canción" aria-label="Search"/>
-            <button class="btn btn-outline-secondary" type="submit">Buscar</button>
             </form>
             <button class="navbar-toggler" 
                     type="button" 
@@ -39,7 +38,7 @@
 
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="playlist.html">
+                        <a class="nav-link disabled" aria-disabled="true" href="">
                             Playlist
                         </a>
                     </li>
@@ -83,16 +82,12 @@
     </div>
     <div class="carousel-item">
       <img src="../img/chysteMC.jpg" class="d-block w-100" alt="...">
-      <div class="carousel-caption d-none d-md-block">
-        <h5>Los mejores artistas</h5>
-        <p>Descubre los mejores artistas de cada género musical.</p>
+      <div class="carousel-caption d-none d-md-block"> 
       </div>
     </div>
     <div class="carousel-item">
       <img src="../img/queen.jpg" class="d-block w-100" alt="...">
       <div class="carousel-caption d-none d-md-block">
-        <h5>Los mejores artistas</h5>
-        <p>Descubre los mejores artistas de cada género musical.</p>
       </div>
     </div>
   </div>
@@ -110,7 +105,7 @@
 
             <div class="row align-items-center">
 
-                <div class="col-md-6">
+                <div class="col-md-6 text-center text-md-start">
 
                     <h1 class="display-4 fw-bold">
                         Bienvenido a Hourtz
@@ -125,19 +120,20 @@
                     </a>
 
                 </div>
-
-               <div id="grafico" class="card mb-3" style="max-width: 450px;">
-                <div class="row g-0">
-                <div class="col-md-4">
-                <img src="..." class="img-fluid rounded-start" alt="...">
-                </div>
-                <div class="col-md-8">
+                <div class="col-md-6 mt-4 mt-md-0 d-flex justify-content-center justify-content-md-end">
+               <div id="grafico" class="card mb-3 text-start shadow-sm" style="max-width: 450px;">
+                <div  id="cardindex" class="row g-0 align-items-center">
+                <div   class="col-4">
+                <img  src="../img/1f525.webp" class="img-fluid rounded-start p-2" alt="fueguito">
+            </div>
+                <div class="col-8">
                 <div class="card-body">
-                    <h5 class="card-title ">¡Unete ya!</h5>
-                    <p class="card-text ">Crea tu cuenta ya y disfruta de todos tus cantantes preferidos, junto a una amplia variedad de géneros por descubrir.</p>
-                    <p class="card-text"><small class="text-body-secondary">Mas de 50.000 usuarios registrados</small></p>
+                    <h5 class="card-title fw-bold">¡Unete ya!</h5>
+                    <p class="card-text" style="font-size: 0.9rem;">Crea tu cuenta ya y disfruta de todos tus cantantes preferidos, junto a una amplia variedad de géneros por descubrir.</p>
+                    <p class="card-text mb-0"><small class="text-body-secondary fw-semibold">Mas de 50.000 usuarios registrados</small></p>
                 </div>
                 </div>
+            </div>
             </div>
 </div>
         </section>
@@ -154,7 +150,7 @@
 
                     <div class="card h-100">
 
-                        <div class="card-body">
+                        <div id="cardindex" class="card-body">
 
                             <h5 class="card-title">
                                 Una variedad inmensa
@@ -164,7 +160,7 @@
                                 ¿Te interesa descubrir nuevos estilos musicales? Pues anímate a hacerlo acá
                             </p>
 
-                            <a href="catalogo.html" class="btn btn-primary">
+                            <a href="catalogo.html" class="btn btn-primary" style="margin-top: 25px;">
                                 Catálogo
                             </a>
 
@@ -175,11 +171,11 @@
                 </div>
 
 
-                <div class="col-md-4 mb-3">
+                <div  class="col-md-4 mb-3">
 
                     <div class="card h-100">
 
-                        <div class="card-body">
+                        <div id="cardindex" class="card-body">
 
                             <h5 class="card-title">
                                 Una personalización sin límites
@@ -189,7 +185,7 @@
                                 ¿Cansado de los perfiles vacíos? Comaparte tus gustos de la manera que prefieras 
                             </p>
 
-                            <a href="#" class="btn btn-primary">
+                            <a href="perfil.html" class="btn btn-primary" style="margin-top: 25px;">
                                 Perfil
                             </a>
 
@@ -204,7 +200,7 @@
 
                     <div class="card h-100">
 
-                        <div class="card-body">
+                        <div id="cardindex" class="card-body">
 
                             <h5 class="card-title">
                                 Un lugar seguro para tus gustos
@@ -215,7 +211,7 @@
                             </p>
 
                             <a href="#" class="btn btn-primary">
-                                Playlist
+                                Proximamente!!
                             </a>
                         </div>
                     </div>

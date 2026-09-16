@@ -20,7 +20,7 @@ body {
 
 
 .navbar {
-    background-color: #181818 !important;
+    background-color: var(--nav-bg)  ;
     padding: 10px 20px;
     border-bottom: 1px solid #383838;
     backdrop-filter: blur(10px);
@@ -58,13 +58,6 @@ body {
     transform: translateY(-2px);
 }
 
-.d-flex{
-    display: flex;
-    justify-content: space-between;
-    weight: bold;
-    width: 50%;
-}
-
 .button:hover, 
 .btn-primary:hover, 
 .btn-outline-primary:hover {
@@ -75,7 +68,7 @@ body {
 
 
 .login { 
-    background-color: rgba(36, 155, 179, 0.226);
+    background-color: var(--nav-bg);
     border: 1px solid var(--borde);
     color: var(--text);
     padding: 30px;
@@ -86,7 +79,7 @@ body {
 }
 
 #register {
-    background-color: rgba(36, 155, 179, 0.226);
+    background-color:var(--nav-bg);
     border: 1px solid var(--borde);
     color: var(--text);
     text-align: left;
@@ -104,6 +97,7 @@ body {
     border-radius: 16px;
     overflow: hidden;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    user-select: none;
 }
 .bg-light{
     color: black;
@@ -111,10 +105,8 @@ body {
 }
 
 #grafico{
-    
     text-align: center;
     margin-top: 10px;
-    margin-left: 90px;
     font-size: 15px;
 }
 .tarjeta-musica {
@@ -126,4 +118,14 @@ body {
 
 .tarjeta-musica .card-text {
     color: #b3b3b3;
+}
+
+#foto_perfil{
+    border: 1px solid var(--borde);
+    border-width: 10px;
+    border-radius: 500px;
+    user-select:  none;
+}
+#cardindex{
+    background-color: var(--text);
 }
