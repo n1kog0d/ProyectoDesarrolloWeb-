@@ -95,6 +95,7 @@ function mostrarAlertalogin(event) {
         window.location.href = 'index.html'; 
     }, 2000); 
   }
+
   // mantener nombre de usuario en el registro
   // Registro
 let user = document.getElementById("user");
@@ -106,14 +107,84 @@ if (user != null) {
         sessionStorage.setItem("autosave", user.value);
     });
 }
-// Cambio en la navbar
+
+// Cambio en la navbar y perfil
 const userName = document.getElementById("userName");
-if (userName != null) {
-    let usuarioGuardado = sessionStorage.getItem("autosave");
-    if (usuarioGuardado != null) {
-        userName.textContent = usuarioGuardado;
+const nombrePerfil = document.getElementById("nombre_perfil");
+const apodoPerfil = document.getElementById("apodo_perfil");
+
+let usuarioGuardado = sessionStorage.getItem("autosave");
+
+if(usuarioGuardado != null){
+  
+  if (userName != null) {
+      userName.textContent = usuarioGuardado;
+
+    if(nombrePerfil != null){
+        nombrePerfil.textContent = usuarioGuardado;
     } 
-    else {
-        userName.textContent = "Perfil";
+    
+    if(apodoPerfil != null){
+      apodoPerfil.textContent = "@" + usuarioGuardado.toLocaleLowerCase().replace(/\s+/g,'');
     }
+}
+}
+else{
+  if (userName != null){
+    userName.textContent = "Perfil"
+  }
 } 
+
+//formulario editar perfil
+
+const btnGuardarPerfil = document.getElementById("btnGuardarPerfil");
+if (btnGuardarPerfil != null) {
+    btnGuardarPerfil.addEventListener("click", function() {
+        
+        const inputSobreMi = document.getElementById("inputSobreMi").value;
+        if (inputSobreMi.trim() !== "") { 
+            
+            sessionStorage.setItem("perfil_sobreMi", inputSobreMi);
+            
+            document.getElementById("sobre_mi_visual").textContent = inputSobreMi;
+        }
+        
+        const inputFoto = document.getElementById("inputFoto");
+        if (inputFoto.files && inputFoto.files[0]) {
+            
+            const lector = new FileReader();
+            lector.onload = function(evento) {
+                
+                const imagenBase64 = evento.target.result;
+                
+                
+                sessionStorage.setItem("perfil_foto", imagenBase64);
+                
+                
+                document.getElementById("imagen_perfil_visual").src = imagenBase64;
+            };
+          
+            lector.readAsDataURL(inputFoto.files[0]);
+        }
+        const modalElement = document.getElementById("modalEditarPerfil");
+        const modalInstancia = bootstrap.Modal.getInstance(modalElement);
+        modalInstancia.hide();
+    });
+}
+
+//Cargar datos al perfil f5
+const imagenVisual = document.getElementById("imagen_perfil_visual");
+const sobreMiVisual = document.getElementById("sobre_mi_visual");
+if (imagenVisual != null) {
+  
+    if (sessionStorage.getItem("perfil_foto")) {
+        imagenVisual.src = sessionStorage.getItem("perfil_foto");
+    }
+}
+if (sobreMiVisual != null) {
+   
+    if (sessionStorage.getItem("perfil_sobreMi")) {
+        sobreMiVisual.textContent = sessionStorage.getItem("perfil_sobreMi");
+    }
+  }
+
