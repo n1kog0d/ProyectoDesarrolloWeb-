@@ -20,9 +20,10 @@ let currentAudio = null;
 let currentButton = null;
 
 const playButtons = document.querySelectorAll('.play-btn');
+
 playButtons.forEach(button => {
-  button.addEventListener('click', () => manejarReproduccion(button));
-});
+  button.addEventListener('click', async () => {
+    const audioSrc = button.getAttribute('data-audio');
 
     if (currentAudio && currentButton === button) {
       if (currentAudio.paused) {
