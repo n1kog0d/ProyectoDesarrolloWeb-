@@ -1,4 +1,8 @@
-// registro de cuenta
+// ============================================================
+// funciones.js — Hourtz
+// ============================================================
+
+// ---------- Registro: validación en tiempo real de contraseñas ----------
 const contraseña = document.getElementById("contraseña");
 const Confcontraseña = document.getElementById("contraseñaC");
 const alerta = document.getElementById("alerta");
@@ -7,351 +11,359 @@ const botonE = document.getElementById("Registro");
 if (Confcontraseña && contraseña) {
   Confcontraseña.addEventListener("input", function() {
     if (contraseña.value !== Confcontraseña.value) {
-      alerta.textContent = "Las contraseñas no coinciden";
-      botonE.disabled = true;  
+      if (alerta) alerta.textContent = "Las contraseñas no coinciden";
+      if (botonE) botonE.disabled = true;
     } else {
-      alerta.textContent = "";
-      botonE.disabled = false;  
+      if (alerta) alerta.textContent = "";
+      if (botonE) botonE.disabled = false;
     }
   });
 }
-//Audio
+
+// ---------- Reproductor de audio ----------
 let currentAudio = null;
 let currentButton = null;
+let currentAudioSrc = null;   // src de la pista activa (identificador estable)
 
 const playButtons = document.querySelectorAll('.play-btn');
-
 playButtons.forEach(button => {
-  button.addEventListener('click', async () => {
-    const audioSrc = button.getAttribute('data-audio');
-
-    if (currentAudio && currentButton === button) {
-      if (currentAudio.paused) {
-        await currentAudio.play();
-      } else {
-        currentAudio.pause();
-      }
-      return;
-    }
-
-    if (currentAudio) {
-      currentAudio.pause();
-      currentAudio.currentTime = 0;
-      if (currentButton) {
-        currentButton.textContent = 'Probar';
-      }
-    }
-
-    const audio = new Audio(audioSrc);
-    audio.volume = 0.2;
-    currentAudio = audio;
-    currentButton = button;
-
-    audio.addEventListener('play', () => {
-      button.textContent = 'Pausar';
-    });
-
-    audio.addEventListener('pause', () => {
-      button.textContent = 'Probar';
-    });
-
-    audio.addEventListener('ended', () => {
-      button.textContent = 'Probar';
-      if (currentAudio === audio) {
-        currentAudio = null;
-        currentButton = null;
-      }
-    });
-
-    try {
-      await audio.play();
-    } catch (err) {
-      console.error("Playback failed. Verify file path and format:", err);
-      if (currentAudio === audio) {
-        currentAudio = null;
-        currentButton = null;
-      }
-    }
-  });
+  button.addEventListener('click', () => manejarReproduccion(button));
 });
 
-//rediregir a inicio de sesion
-function mostrarAlertalogin(event) {
-    event.preventDefault();
-    const toastHTML = document.getElementById('alertaExitologin');
-    const toast = new bootstrap.Toast(toastHTML);
-    toast.show();
-    setTimeout(function() {  
-        window.location.href = 'index.html'; 
-    }, 2000); 
-  }
-//rediregir a registro de cuenta
-  function mostrarAlertaregister(event) {
-    event.preventDefault();
-    const toastHTML = document.getElementById('alertaExitoregister');
-    const toast = new bootstrap.Toast(toastHTML);
-    toast.show();
-    setTimeout(function() {  
-        window.location.href = 'index.html'; 
-    }, 2000); 
+// ÚNICA definición de manejarReproduccion (versión con fix por src)
+async function manejarReproduccion(button) {
+  const audioSrc = button.getAttribute('data-audio');
+  if (!audioSrc) return;
+
+  // Misma pista (comparada por src, no por referencia al botón)
+  if (currentAudio && currentAudioSrc === audioSrc) {
+    if (currentAudio.paused) {
+      await currentAudio.play();
+    } else {
+      currentAudio.pause();
+    }
+    currentButton = button;
+    return;
   }
 
-  // mantener nombre de usuario en el registro
-  // Registro
-let user = document.getElementById("user");
-if (user != null) {
-    if (sessionStorage.getItem("autosave")) {
-        user.value = sessionStorage.getItem("autosave");
+  // Otra pista sonando → detenerla y restaurar su botón
+  if (currentAudio) {
+    currentAudio.pause();
+    currentAudio.currentTime = 0;
+    const prevSrc = currentAudioSrc;
+    if (prevSrc) {
+      document.querySelectorAll(`[data-audio="${CSS.escape(prevSrc)}"]`)
+        .forEach(b => { b.textContent = 'Probar'; });
     }
-    user.addEventListener("change", () => {
-        sessionStorage.setItem("autosave", user.value);
-    });
+  }
+
+  // Reproducir pista nueva
+  const audio = new Audio(audioSrc);
+  audio.volume = 0.2;
+  currentAudio = audio;
+  currentAudioSrc = audioSrc;
+  currentButton = button;
+
+  audio.addEventListener('play', () => {
+    document.querySelectorAll(`[data-audio="${CSS.escape(audioSrc)}"]`)
+      .forEach(b => { b.textContent = 'Pausar'; });
+  });
+  audio.addEventListener('pause', () => {
+    document.querySelectorAll(`[data-audio="${CSS.escape(audioSrc)}"]`)
+      .forEach(b => { b.textContent = 'Probar'; });
+  });
+  audio.addEventListener('ended', () => {
+    document.querySelectorAll(`[data-audio="${CSS.escape(audioSrc)}"]`)
+      .forEach(b => { b.textContent = 'Probar'; });
+    if (currentAudio === audio) {
+      currentAudio = null;
+      currentButton = null;
+      currentAudioSrc = null;
+    }
+  });
+
+  try {
+    await audio.play();
+  } catch (err) {
+    console.error("Playback failed. Verify file path and format:", err);
+    if (currentAudio === audio) {
+      currentAudio = null;
+      currentButton = null;
+      currentAudioSrc = null;
+    }
+  }
 }
 
-// Cambio en la navbar y perfil
+// ---------- Autosave del nombre de usuario ----------
+let user = document.getElementById("user");
+if (user != null) {
+  if (sessionStorage.getItem("autosave")) user.value = sessionStorage.getItem("autosave");
+  user.addEventListener("change", () => { sessionStorage.setItem("autosave", user.value); });
+}
+
+// ---------- Navbar y perfil ----------
 const userName = document.getElementById("userName");
 const nombrePerfil = document.getElementById("nombre_perfil");
 const apodoPerfil = document.getElementById("apodo_perfil");
-
 let usuarioGuardado = sessionStorage.getItem("autosave");
 
-if(usuarioGuardado != null){
-  
+if (usuarioGuardado != null) {
   if (userName != null) {
-      userName.textContent = usuarioGuardado;
-
-    if(nombrePerfil != null){
-        nombrePerfil.textContent = usuarioGuardado;
-    } 
-    
-    if(apodoPerfil != null){
-      apodoPerfil.textContent = "@" + usuarioGuardado.toLocaleLowerCase().replace(/\s+/g,'');
-    }
-}
-}
-else{
-  if (userName != null){
-    userName.textContent = "Perfil"
+    userName.textContent = usuarioGuardado;
+    if (nombrePerfil != null) nombrePerfil.textContent = usuarioGuardado;
+    if (apodoPerfil != null) apodoPerfil.textContent = "@" + usuarioGuardado.toLocaleLowerCase().replace(/\s+/g,'');
   }
-} 
+} else {
+  if (userName != null) userName.textContent = "Perfil";
+}
 
-//formulario editar perfil
-
+// ---------- Formulario editar perfil ----------
 const btnGuardarPerfil = document.getElementById("btnGuardarPerfil");
 if (btnGuardarPerfil != null) {
-    btnGuardarPerfil.addEventListener("click", function() {
-        
-        const inputSobreMi = document.getElementById("inputSobreMi").value;
-        if (inputSobreMi.trim() !== "") { 
-            
-            sessionStorage.setItem("perfil_sobreMi", inputSobreMi);
-            
-            document.getElementById("sobre_mi_visual").textContent = inputSobreMi;
-        }
-        
-        const inputFoto = document.getElementById("inputFoto");
-        if (inputFoto.files && inputFoto.files[0]) {
-            
-            const lector = new FileReader();
-            lector.onload = function(evento) {
-                
-                const imagenBase64 = evento.target.result;
-                
-                
-                sessionStorage.setItem("perfil_foto", imagenBase64);
-                
-                
-                document.getElementById("imagen_perfil_visual").src = imagenBase64;
-            };
-          
-            lector.readAsDataURL(inputFoto.files[0]);
-        }
-        const modalElement = document.getElementById("modalEditarPerfil");
-        const modalInstancia = bootstrap.Modal.getInstance(modalElement);
-        modalInstancia.hide();
-    });
+  btnGuardarPerfil.addEventListener("click", function() {
+    const inputSobreMi = document.getElementById("inputSobreMi").value;
+    if (inputSobreMi.trim() !== "") {
+      sessionStorage.setItem("perfil_sobreMi", inputSobreMi);
+      document.getElementById("sobre_mi_visual").textContent = inputSobreMi;
+    }
+    const inputFoto = document.getElementById("inputFoto");
+    if (inputFoto.files && inputFoto.files[0]) {
+      const lector = new FileReader();
+      lector.onload = function(evento) {
+        const imagenBase64 = evento.target.result;
+        sessionStorage.setItem("perfil_foto", imagenBase64);
+        document.getElementById("imagen_perfil_visual").src = imagenBase64;
+      };
+      lector.readAsDataURL(inputFoto.files[0]);
+    }
+    const modalElement = document.getElementById("modalEditarPerfil");
+    const modalInstancia = bootstrap.Modal.getInstance(modalElement);
+    modalInstancia.hide();
+  });
 }
 
-//Cargar datos al perfil
+// ---------- Cargar datos al perfil ----------
 const imagenVisual = document.getElementById("imagen_perfil_visual");
 const sobreMiVisual = document.getElementById("sobre_mi_visual");
-if (imagenVisual != null) {
-  
-    if (sessionStorage.getItem("perfil_foto")) {
-        imagenVisual.src = sessionStorage.getItem("perfil_foto");
-    }
+if (imagenVisual != null && sessionStorage.getItem("perfil_foto")) {
+  imagenVisual.src = sessionStorage.getItem("perfil_foto");
 }
-if (sobreMiVisual != null) {
-   
-    if (sessionStorage.getItem("perfil_sobreMi")) {
-        sobreMiVisual.textContent = sessionStorage.getItem("perfil_sobreMi");
-    }
-  }
+if (sobreMiVisual != null && sessionStorage.getItem("perfil_sobreMi")) {
+  sobreMiVisual.textContent = sessionStorage.getItem("perfil_sobreMi");
+}
 
-/* ============================================================
-   BUSCADOR DE CANCIONES - Hourtz
-   Se conecta a un futuro archivo JSON con el catálogo.
-   Reutiliza la lógica de reproducción existente.
-   ============================================================ */
-
+// ============================================================
+// BUSCADOR DE CANCIONES
+// ============================================================
+const RUTA_JSON = '../Json/datos.json';
 let datosCatalogo = [];
 
-// Ajusta la ruta si colocas el JSON en otra ubicación
-const RUTA_JSON = '../Json/datos.json';
-
 document.addEventListener('DOMContentLoaded', () => {
+  const input = document.getElementById('buscador');
+  const contenedor = document.getElementById('resultadosBusqueda');
+  if (!input || !contenedor) return;
 
-    const input = document.getElementById('buscador');
-    const contenedor = document.getElementById('resultadosBusqueda');
+  // Cargar catálogo desde el JSON
+  fetch(RUTA_JSON)
+    .then(res => {
+      if (!res.ok) throw new Error('JSON no disponible');
+      return res.json();
+    })
+    .then(data => {
+      datosCatalogo = Array.isArray(data) ? data : (data.canciones || []);
+      console.log(`[Buscador] ${datosCatalogo.length} canciones cargadas.`);
+    })
+    .catch(err => {
+      console.warn('[Buscador] El JSON aún no está disponible:', err.message);
+    });
 
-    // Si esta página no tiene buscador, no hacemos nada
-    if (!input || !contenedor) return;
+  function mostrarResultados(html) {
+    contenedor.innerHTML = html;
+    contenedor.style.display = 'block';
+  }
+  function ocultarResultados() {
+    contenedor.innerHTML = '';
+    contenedor.style.display = 'none';
+  }
 
-    // --- Cargar el JSON (cuando exista) ---
-    fetch(RUTA_JSON)
-        .then(res => {
-            if (!res.ok) throw new Error('JSON no disponible');
-            return res.json();
-        })
-        .then(data => {
-            datosCatalogo = Array.isArray(data) ? data : (data.canciones || []);
-            console.log(`[Buscador] ${datosCatalogo.length} canciones cargadas.`);
-        })
-        .catch(err => {
-            console.warn('[Buscador] El JSON aún no está disponible:', err.message);
-        });
+  input.addEventListener('input', () => {
+    const termino = input.value.toLowerCase().trim();
 
-    // --- Mostrar/ocultar el contenedor de resultados ---
-    function mostrarResultados(html) {
-        contenedor.innerHTML = html;
-        contenedor.style.display = 'block';
+    if (termino === '') { ocultarResultados(); return; }
+
+    if (datosCatalogo.length === 0) {
+      mostrarResultados('<div class="list-group-item text-muted">El catálogo aún no está disponible.</div>');
+      return;
     }
-    function ocultarResultados() {
-        contenedor.innerHTML = '';
-        contenedor.style.display = 'none';
+
+    const resultados = datosCatalogo.filter(c =>
+      (c.titulo  || '').toLowerCase().includes(termino) ||
+      (c.artista || '').toLowerCase().includes(termino) ||
+      (c.genero  || '').toLowerCase().includes(termino)
+    );
+
+    if (resultados.length === 0) {
+      mostrarResultados('<div class="list-group-item text-muted">Sin resultados.</div>');
+      return;
     }
 
-    // --- Evento de escritura ---
-    input.addEventListener('input', () => {
-        const termino = input.value.toLowerCase().trim();
+    // Cambio 4: si la pista ya está sonando, el botón nace como "Pausar"
+    const html = resultados.slice(0, 8).map(c => `
+      <div class="list-group-item d-flex align-items-center gap-2">
+        ${c.imagen ? `<img src="${c.imagen}" alt="" style="width:36px;height:36px;object-fit:cover;" class="rounded">` : ''}
+        <div class="flex-grow-1">
+          <strong>${c.titulo || 'Sin título'}</strong><br>
+          <small class="text-muted">${c.artista || ''}${c.genero ? ' · ' + c.genero : ''}</small>
+        </div>
+        <button 
+          class="btn btn-sm btn-outline-primary play-btn-busqueda" 
+          data-audio="${c.audio || ''}">
+          ${(currentAudio && currentAudioSrc === c.audio && !currentAudio.paused) ? 'Pausar' : 'Probar'}
+        </button>
+      </div>
+    `).join('');
 
-        if (termino === '') {
-            ocultarResultados();
-            return;
-        }
+    mostrarResultados(html);
 
-        if (datosCatalogo.length === 0) {
-            mostrarResultados(
-                '<div class="list-group-item text-muted">El catálogo aún no está disponible.</div>'
-            );
-            return;
-        }
-
-        // Filtrar por título, artista o género
-        const resultados = datosCatalogo.filter(c =>
-            (c.titulo  || '').toLowerCase().includes(termino) ||
-            (c.artista || '').toLowerCase().includes(termino) ||
-            (c.genero  || '').toLowerCase().includes(termino)
-        );
-
-        if (resultados.length === 0) {
-            mostrarResultados(
-                '<div class="list-group-item text-muted">Sin resultados.</div>'
-            );
-            return;
-        }
-
-        // Renderizar (máx. 8 para no saturar el navbar)
-        const html = resultados.slice(0, 8).map(c => `
-            <div class="list-group-item d-flex align-items-center gap-2">
-                ${c.imagen ? `<img src="${c.imagen}" alt="" style="width:36px;height:36px;object-fit:cover;" class="rounded">` : ''}
-                <div class="flex-grow-1">
-                    <strong>${c.titulo || 'Sin título'}</strong><br>
-                    <small class="text-muted">${c.artista || ''}${c.genero ? ' · ' + c.genero : ''}</small>
-                </div>
-                <button 
-                    class="btn btn-sm btn-outline-primary play-btn-busqueda" 
-                    data-audio="${c.audio || ''}">
-                    Probar
-                </button>
-            </div>
-        `).join('');
-
-        mostrarResultados(html);
-
-        // Enganchar el reproductor a los botones generados dinámicamente
-        contenedor.querySelectorAll('.play-btn-busqueda').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.stopPropagation(); // no cerrar el desplegable al pulsar
-                manejarReproduccion(btn);
-            });
-        });
+    contenedor.querySelectorAll('.play-btn-busqueda').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        manejarReproduccion(btn);
+      });
     });
+  });
 
-    // --- Cerrar resultados al hacer clic fuera ---
-    document.addEventListener('click', (e) => {
-        if (!input.contains(e.target) && !contenedor.contains(e.target)) {
-            ocultarResultados();
-        }
-    });
+  // Cerrar resultados al hacer clic fuera
+  document.addEventListener('click', (e) => {
+    if (!input.contains(e.target) && !contenedor.contains(e.target)) {
+      ocultarResultados();
+    }
+  });
 
-    // --- Cerrar con ESC ---
-    input.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') ocultarResultados();
-    });
+  // Cerrar con ESC
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') ocultarResultados();
+  });
 });
 
+// ============================================================
+// AUTENTICACIÓN
+// ============================================================
+const RUTA_DATOS_AUTH = "../Json/datos.json";
+const CLAVE_SESION_AUTH = "usuarioActivo";
+const CLAVE_LOCAL_AUTH = "usuariosLocales";
 
-/* ============================================================
-   Reproductor reutilizable (misma lógica que tu catálogo)
-   Se usa tanto desde el buscador como desde los .play-btn fijos.
-   ============================================================ */
+async function cargarDatosAuth() {
+  try {
+    const res = await fetch(RUTA_DATOS_AUTH);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    return data.usuarios || [];
+  } catch (e) {
+    console.error("Error leyendo datos.json para autenticación:", e);
+    return [];
+  }
+}
 
-async function manejarReproduccion(button) {
-    const audioSrc = button.getAttribute('data-audio');
-    if (!audioSrc) return;
+function obtenerUsuariosLocales() {
+  return JSON.parse(localStorage.getItem(CLAVE_LOCAL_AUTH) || "[]");
+}
 
-    // Si es el mismo botón y el mismo audio → play/pause
-    if (currentAudio && currentButton === button) {
-        if (currentAudio.paused) {
-            await currentAudio.play();
-        } else {
-            currentAudio.pause();
-        }
-        return;
-    }
+function guardarUsuarioLocal(usuario) {
+  const locales = obtenerUsuariosLocales();
+  locales.push(usuario);
+  localStorage.setItem(CLAVE_LOCAL_AUTH, JSON.stringify(locales));
+}
 
-    // Detener el audio anterior
-    if (currentAudio) {
-        currentAudio.pause();
-        currentAudio.currentTime = 0;
-        if (currentButton) {
-            currentButton.textContent = 'Probar';
-        }
-    }
+async function mostrarAlertalogin(event) {
+  event.preventDefault();
 
-    const audio = new Audio(audioSrc);
-    audio.volume = 0.2;
-    currentAudio = audio;
-    currentButton = button;
+  const emailInput = document.getElementById("email");
+  const passInput = document.getElementById("password")
+                 || document.querySelector('#login input[type="password"]');
 
-    audio.addEventListener('play',   () => { button.textContent = 'Pausar'; });
-    audio.addEventListener('pause',  () => { button.textContent = 'Probar'; });
-    audio.addEventListener('ended',  () => {
-        button.textContent = 'Probar';
-        if (currentAudio === audio) {
-            currentAudio = null;
-            currentButton = null;
-        }
-    });
+  if (!emailInput || !passInput) {
+    alert("No se encontraron los campos del formulario.");
+    return;
+  }
 
-    try {
-        await audio.play();
-    } catch (err) {
-        console.error("Playback failed. Verify file path and format:", err);
-        if (currentAudio === audio) {
-            currentAudio = null;
-            currentButton = null;
-        }
-    }
+  const email = emailInput.value.trim().toLowerCase();
+  const password = passInput.value;
+
+  const usuariosJSON = await cargarDatosAuth();
+  const usuariosLocales = obtenerUsuariosLocales();
+  const todos = [...usuariosJSON, ...usuariosLocales];
+
+  const usuario = todos.find(u =>
+    (u.email   && u.email.toLowerCase()   === email) ||
+    (u.usuario && u.usuario.toLowerCase() === email)
+  );
+
+  if (!usuario) { alert("No existe una cuenta con ese correo o usuario."); return; }
+  if (usuario.password !== password) { alert("Contraseña incorrecta."); return; }
+
+  const sesion = {
+    id: usuario.id, nombre: usuario.nombre, usuario: usuario.usuario,
+    email: usuario.email, rol: usuario.rol || "user"
+  };
+  sessionStorage.setItem(CLAVE_SESION_AUTH, JSON.stringify(sesion));
+  sessionStorage.setItem("autosave", usuario.nombre);
+
+  const toastHTML = document.getElementById("alertaExitologin");
+  if (toastHTML) new bootstrap.Toast(toastHTML).show();
+
+  setTimeout(() => { window.location.href = "index.html"; }, 2000);
+}
+
+function mostrarAlertaregister(event) {
+  event.preventDefault();
+
+  const nombre = document.getElementById("nombre")?.value.trim();
+  const usuario = document.getElementById("user")?.value.trim();
+  const email = document.getElementById("email")?.value.trim().toLowerCase();
+  const pass = document.getElementById("contraseña")?.value;
+  const passC = document.getElementById("contraseñaC")?.value;
+
+  if (!nombre || !usuario || !email || !pass || !passC) { alert("Faltan campos obligatorios."); return; }
+  if (pass !== passC) { alert("Las contraseñas no coinciden."); return; }
+  if (pass.length < 8) { alert("La contraseña debe tener al menos 8 caracteres."); return; }
+
+  const locales = obtenerUsuariosLocales();
+  if (locales.some(u => u.email.toLowerCase() === email)) {
+    alert("Ese correo ya está registrado en este navegador.");
+    return;
+  }
+
+  guardarUsuarioLocal({
+    id: Date.now(),
+    nombre: nombre,
+    usuario: usuario,
+    email: email,
+    password: pass,
+    rol: "user",
+    avatar: "../img/avatar-default.webp",
+    seguidores: 0,
+    seguidos: 0,
+    playlists: []
+  });
+
+  const toastHTML = document.getElementById("alertaExitoregister");
+  if (toastHTML) new bootstrap.Toast(toastHTML).show();
+
+  setTimeout(() => { window.location.href = "login.html"; }, 2000);
+}
+
+// ---------- Utilidades de sesión ----------
+function obtenerSesion() {
+  const raw = sessionStorage.getItem("usuarioActivo");
+  return raw ? JSON.parse(raw) : null;
+}
+
+function cerrarSesion() {
+  sessionStorage.removeItem("usuarioActivo");
+  sessionStorage.removeItem("autosave");
+  sessionStorage.removeItem("perfil_sobreMi");
+  sessionStorage.removeItem("perfil_foto");
+  const enSubcarpeta = window.location.pathname.toLowerCase().includes("/html/");
+  window.location.href = enSubcarpeta ? "index.html" : "HTML/index.html";
 }
