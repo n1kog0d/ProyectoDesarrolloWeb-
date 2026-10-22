@@ -1,0 +1,18 @@
+[
+  {
+    "id": 1,
+    "titulo": "Bohemian Rhapsody",
+    "artista": "Queen",
+    "genero": "Rock",
+    "audio": "../audios/queen-bohemian.mp3",
+    "imagen": "../img/queen.jpg"
+  },
+  {
+    "id": 2,
+    "titulo": "Canción de ejemplo",
+    "artista": "Artista X",
+    "genero": "Pop",
+    "audio": "../audios/ejemplo.mp3",
+    "imagen": "../img/1f525.webp"
+  }
+]
