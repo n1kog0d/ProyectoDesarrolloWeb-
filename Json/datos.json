@@ -1,14 +1,42 @@
 {
   "canciones": [
-    { "id": 1, "titulo": "Bohemian Rhapsody", "artista": "Queen",
-      "genero": "Rock", "audio": "../audios/rock.mp3", "imagen": "../img/queen.jpg" },
-    { "id": 2, "titulo": "Senda Bellakona", "artista": "Tulaka",
-      "genero": "Reggaeton", "audio": "../audios/reggaeton.mp3", "imagen": "../img/reggaeton.webp" }
+    {
+      "id": 1,
+      "titulo": "Bohemian Rhapsody",
+      "artista": "Queen",
+      "genero": "Rock",
+      "audio": "../audios/rock.mp3",
+      "imagen": "../img/queen.jpg"
+    },
+    {
+      "id": 2,
+      "titulo": "Senda Bellakona",
+      "artista": "Tulaka",
+      "genero": "Reggaeton",
+      "audio": "../audios/reggaeton.mp3",
+      "imagen": "../img/reggaeton.webp"
+    }
   ],
   "usuarios": [
-    { "id": 1, "nombre": "Nicolás Zambrano", "usuario": "nicolasz",
-      "email": "nicolasz@gmail.com", "password": "N1c0_2026",
-      "rol": "admin", "avatar": "../img/avatar-nicolas.webp",
-      "seguidores": 128, "seguidos": 47, "playlists": [] }
+    {
+      "id": 1,
+      "nombre": "Nicolás Zambrano",
+      "usuario": "nicolasz",
+      "email": "nicolasz@gmail.com",
+      "password": "N1c0_2026",
+      "rol": "admin",
+      "avatar": "../img/avatar-nicolas.webp",
+      "seguidores": 128,
+      "seguidos": 47,
+      "sobreMi": "Amante del rock y el reggaeton. Siempre buscando el próximo beat.",
+      "generos": ["Rock", "Reggaeton", "HipHop"],
+      "artistas_favoritos": ["Queen", "Tulaka", "ChysteMC"],
+      "mas_escuchadas": ["Bohemian Rhapsody", "Senda Bellakona", "Convencete"],
+      "playlists": [
+        { "id": 1, "nombre": "Favoritas",     "canciones": 12 },
+        { "id": 2, "nombre": "Para estudiar", "canciones": 8  },
+        { "id": 3, "nombre": "Gym",           "canciones": 5  }
+      ]
+    }
   ]
 }

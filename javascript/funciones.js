@@ -23,19 +23,17 @@ if (Confcontraseña && contraseña) {
 // ---------- Reproductor de audio ----------
 let currentAudio = null;
 let currentButton = null;
-let currentAudioSrc = null;   // src de la pista activa (identificador estable)
+let currentAudioSrc = null;
 
 const playButtons = document.querySelectorAll('.play-btn');
 playButtons.forEach(button => {
   button.addEventListener('click', () => manejarReproduccion(button));
 });
 
-// ÚNICA definición de manejarReproduccion (versión con fix por src)
 async function manejarReproduccion(button) {
   const audioSrc = button.getAttribute('data-audio');
   if (!audioSrc) return;
 
-  // Misma pista (comparada por src, no por referencia al botón)
   if (currentAudio && currentAudioSrc === audioSrc) {
     if (currentAudio.paused) {
       await currentAudio.play();
@@ -46,7 +44,6 @@ async function manejarReproduccion(button) {
     return;
   }
 
-  // Otra pista sonando → detenerla y restaurar su botón
   if (currentAudio) {
     currentAudio.pause();
     currentAudio.currentTime = 0;
@@ -57,7 +54,6 @@ async function manejarReproduccion(button) {
     }
   }
 
-  // Reproducir pista nueva
   const audio = new Audio(audioSrc);
   audio.volume = 0.2;
   currentAudio = audio;
@@ -101,59 +97,182 @@ if (user != null) {
   user.addEventListener("change", () => { sessionStorage.setItem("autosave", user.value); });
 }
 
-// ---------- Navbar y perfil ----------
+// ---------- Navbar: nombre de usuario ----------
 const userName = document.getElementById("userName");
-const nombrePerfil = document.getElementById("nombre_perfil");
-const apodoPerfil = document.getElementById("apodo_perfil");
 let usuarioGuardado = sessionStorage.getItem("autosave");
 
 if (usuarioGuardado != null) {
-  if (userName != null) {
-    userName.textContent = usuarioGuardado;
-    if (nombrePerfil != null) nombrePerfil.textContent = usuarioGuardado;
-    if (apodoPerfil != null) apodoPerfil.textContent = "@" + usuarioGuardado.toLocaleLowerCase().replace(/\s+/g,'');
-  }
+  if (userName != null) userName.textContent = usuarioGuardado;
 } else {
   if (userName != null) userName.textContent = "Perfil";
 }
 
-// ---------- Formulario editar perfil ----------
+// ============================================================
+// PERFIL DINÁMICO
+// ============================================================
+
+let usuarioActual = null;
+
+async function cargarDatosAuth() {
+  try {
+    const res = await fetch("../Json/datos.json");
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    return data.usuarios || [];
+  } catch (e) {
+    console.error("Error leyendo datos.json:", e);
+    return [];
+  }
+}
+
+function obtenerUsuariosLocales() {
+  return JSON.parse(localStorage.getItem("usuariosLocales") || "[]");
+}
+
+async function obtenerUsuarioCompleto() {
+  const sesion = obtenerSesion();
+  if (!sesion) return null;
+
+  const parches = JSON.parse(localStorage.getItem("parchesPerfil") || "{}");
+  const parche = parches[sesion.id] || {};
+
+  const locales = obtenerUsuariosLocales();
+  const enLocal = locales.find(u => u.id === sesion.id);
+  if (enLocal) return { ...enLocal, ...parche };
+
+  const delJSON = await cargarDatosAuth();
+  const delJSONUsuario = delJSON.find(u => u.id === sesion.id);
+  return { ...(delJSONUsuario || sesion), ...parche };
+}
+
+function pintarLista(idContenedor, items) {
+  const ul = document.getElementById(idContenedor);
+  if (!ul) return;
+
+  if (!items || items.length === 0) {
+    ul.innerHTML = '<li class="mb-2 text-muted">Sin datos</li>';
+    return;
+  }
+
+  ul.innerHTML = items.map(txt => `<li class="mb-2">${txt}</li>`).join('');
+}
+
+function pintarPerfil(usuario) {
+  usuarioActual = usuario;
+
+  const nombreEl  = document.getElementById("nombre_perfil");
+  const apodoEl   = document.getElementById("apodo_perfil");
+  const fotoEl    = document.getElementById("imagen_perfil_visual");
+  const sobreMiEl = document.getElementById("sobre_mi_visual");
+  const statPl    = document.getElementById("stat_playlists");
+  const statSeg   = document.getElementById("stat_seguidores");
+
+  if (!usuario) {
+    if (nombreEl) nombreEl.textContent = "Usuario Invitado";
+    if (apodoEl)  apodoEl.textContent  = "@usuario_invitado";
+    if (statPl)   statPl.textContent   = "0";
+    if (statSeg)  statSeg.textContent  = "0";
+    pintarLista("lista_generos", []);
+    pintarLista("lista_artistas", []);
+    pintarLista("lista_escuchadas", []);
+    pintarLista("lista_playlists", []);
+    return;
+  }
+
+  if (nombreEl) nombreEl.textContent = usuario.nombre || usuario.usuario || "Usuario";
+  if (apodoEl)  apodoEl.textContent  = "@" + (usuario.usuario || "").toLowerCase();
+  if (fotoEl && usuario.avatar) fotoEl.src = usuario.avatar;
+  if (sobreMiEl && usuario.sobreMi) sobreMiEl.textContent = usuario.sobreMi;
+
+  const playlists = usuario.playlists || [];
+  if (statPl)  statPl.textContent  = playlists.length;
+  if (statSeg) statSeg.textContent = usuario.seguidores || 0;
+
+  pintarLista("lista_generos",    usuario.generos            || []);
+  pintarLista("lista_artistas",   usuario.artistas_favoritos || []);
+  pintarLista("lista_escuchadas", usuario.mas_escuchadas     || []);
+
+  const nombresPlaylists = playlists.map(p =>
+    typeof p === "string" ? p : (p.nombre || "Playlist")
+  );
+  pintarLista("lista_playlists", nombresPlaylists);
+}
+
+// Ejecutar solo en perfil.html
+document.addEventListener("DOMContentLoaded", async () => {
+  if (!document.getElementById("nombre_perfil")) return;
+  const usuario = await obtenerUsuarioCompleto();
+  pintarPerfil(usuario);
+});
+
+// ============================================================
+// MODAL EDITAR PERFIL
+// ============================================================
+
 const btnGuardarPerfil = document.getElementById("btnGuardarPerfil");
 if (btnGuardarPerfil != null) {
-  btnGuardarPerfil.addEventListener("click", function() {
-    const inputSobreMi = document.getElementById("inputSobreMi").value;
-    if (inputSobreMi.trim() !== "") {
-      sessionStorage.setItem("perfil_sobreMi", inputSobreMi);
-      document.getElementById("sobre_mi_visual").textContent = inputSobreMi;
+  btnGuardarPerfil.addEventListener("click", async function() {
+    const sesion = obtenerSesion();
+    if (!sesion) { alert("Debes iniciar sesión para editar tu perfil."); return; }
+
+    const inputSobreMi = document.getElementById("inputSobreMi");
+    const inputFoto    = document.getElementById("inputFoto");
+
+    const cambios = {};
+
+    if (inputSobreMi && inputSobreMi.value.trim() !== "") {
+      cambios.sobreMi = inputSobreMi.value.trim();
     }
-    const inputFoto = document.getElementById("inputFoto");
-    if (inputFoto.files && inputFoto.files[0]) {
-      const lector = new FileReader();
-      lector.onload = function(evento) {
-        const imagenBase64 = evento.target.result;
-        sessionStorage.setItem("perfil_foto", imagenBase64);
-        document.getElementById("imagen_perfil_visual").src = imagenBase64;
-      };
-      lector.readAsDataURL(inputFoto.files[0]);
+
+    if (inputFoto && inputFoto.files && inputFoto.files[0]) {
+      cambios.avatar = await new Promise((res, rej) => {
+        const lector = new FileReader();
+        lector.onload = e => res(e.target.result);
+        lector.onerror = rej;
+        lector.readAsDataURL(inputFoto.files[0]);
+      });
     }
-    const modalElement = document.getElementById("modalEditarPerfil");
-    const modalInstancia = bootstrap.Modal.getInstance(modalElement);
-    modalInstancia.hide();
+
+    if (Object.keys(cambios).length === 0) {
+      const modal = bootstrap.Modal.getInstance(document.getElementById("modalEditarPerfil"));
+      if (modal) modal.hide();
+      return;
+    }
+
+    const locales = obtenerUsuariosLocales();
+    const idx = locales.findIndex(u => u.id === sesion.id);
+
+    if (idx >= 0) {
+      locales[idx] = { ...locales[idx], ...cambios };
+      localStorage.setItem("usuariosLocales", JSON.stringify(locales));
+    } else {
+      const parches = JSON.parse(localStorage.getItem("parchesPerfil") || "{}");
+      parches[sesion.id] = { ...(parches[sesion.id] || {}), ...cambios };
+      localStorage.setItem("parchesPerfil", JSON.stringify(parches));
+    }
+
+    const usuario = await obtenerUsuarioCompleto();
+    pintarPerfil(usuario);
+
+    const modal = bootstrap.Modal.getInstance(document.getElementById("modalEditarPerfil"));
+    if (modal) modal.hide();
   });
 }
 
-// ---------- Cargar datos al perfil ----------
-const imagenVisual = document.getElementById("imagen_perfil_visual");
-const sobreMiVisual = document.getElementById("sobre_mi_visual");
-if (imagenVisual != null && sessionStorage.getItem("perfil_foto")) {
-  imagenVisual.src = sessionStorage.getItem("perfil_foto");
-}
-if (sobreMiVisual != null && sessionStorage.getItem("perfil_sobreMi")) {
-  sobreMiVisual.textContent = sessionStorage.getItem("perfil_sobreMi");
-}
+// Pre-rellenar el modal al abrir
+document.addEventListener("DOMContentLoaded", () => {
+  const modalEl = document.getElementById("modalEditarPerfil");
+  if (!modalEl) return;
+  modalEl.addEventListener("show.bs.modal", () => {
+    const inputSobreMi = document.getElementById("inputSobreMi");
+    const inputFoto    = document.getElementById("inputFoto");
+    if (inputSobreMi && usuarioActual) inputSobreMi.value = usuarioActual.sobreMi || "";
+    if (inputFoto) inputFoto.value = "";
+  });
+});
 
 // ============================================================
-// BUSCADOR DE CANCIONES
+// BUSCADOR
 // ============================================================
 const RUTA_JSON = '../Json/datos.json';
 let datosCatalogo = [];
@@ -163,19 +282,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const contenedor = document.getElementById('resultadosBusqueda');
   if (!input || !contenedor) return;
 
-  // Cargar catálogo desde el JSON
   fetch(RUTA_JSON)
-    .then(res => {
-      if (!res.ok) throw new Error('JSON no disponible');
-      return res.json();
-    })
+    .then(res => { if (!res.ok) throw new Error('JSON no disponible'); return res.json(); })
     .then(data => {
       datosCatalogo = Array.isArray(data) ? data : (data.canciones || []);
       console.log(`[Buscador] ${datosCatalogo.length} canciones cargadas.`);
     })
-    .catch(err => {
-      console.warn('[Buscador] El JSON aún no está disponible:', err.message);
-    });
+    .catch(err => console.warn('[Buscador] JSON no disponible:', err.message));
 
   function mostrarResultados(html) {
     contenedor.innerHTML = html;
@@ -207,7 +320,6 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    // Cambio 4: si la pista ya está sonando, el botón nace como "Pausar"
     const html = resultados.slice(0, 8).map(c => `
       <div class="list-group-item d-flex align-items-center gap-2">
         ${c.imagen ? `<img src="${c.imagen}" alt="" style="width:36px;height:36px;object-fit:cover;" class="rounded">` : ''}
@@ -233,14 +345,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Cerrar resultados al hacer clic fuera
   document.addEventListener('click', (e) => {
-    if (!input.contains(e.target) && !contenedor.contains(e.target)) {
-      ocultarResultados();
-    }
+    if (!input.contains(e.target) && !contenedor.contains(e.target)) ocultarResultados();
   });
 
-  // Cerrar con ESC
   input.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') ocultarResultados();
   });
@@ -249,25 +357,8 @@ document.addEventListener('DOMContentLoaded', () => {
 // ============================================================
 // AUTENTICACIÓN
 // ============================================================
-const RUTA_DATOS_AUTH = "../Json/datos.json";
 const CLAVE_SESION_AUTH = "usuarioActivo";
-const CLAVE_LOCAL_AUTH = "usuariosLocales";
-
-async function cargarDatosAuth() {
-  try {
-    const res = await fetch(RUTA_DATOS_AUTH);
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const data = await res.json();
-    return data.usuarios || [];
-  } catch (e) {
-    console.error("Error leyendo datos.json para autenticación:", e);
-    return [];
-  }
-}
-
-function obtenerUsuariosLocales() {
-  return JSON.parse(localStorage.getItem(CLAVE_LOCAL_AUTH) || "[]");
-}
+const CLAVE_LOCAL_AUTH  = "usuariosLocales";
 
 function guardarUsuarioLocal(usuario) {
   const locales = obtenerUsuariosLocales();
@@ -341,9 +432,13 @@ function mostrarAlertaregister(event) {
     email: email,
     password: pass,
     rol: "user",
-    avatar: "../img/avatar-default.webp",
+    avatar: "../img/usuario-sin-foto.jpg",
     seguidores: 0,
     seguidos: 0,
+    sobreMi: "",
+    generos: [],
+    artistas_favoritos: [],
+    mas_escuchadas: [],
     playlists: []
   });
 
@@ -362,8 +457,6 @@ function obtenerSesion() {
 function cerrarSesion() {
   sessionStorage.removeItem("usuarioActivo");
   sessionStorage.removeItem("autosave");
-  sessionStorage.removeItem("perfil_sobreMi");
-  sessionStorage.removeItem("perfil_foto");
   const enSubcarpeta = window.location.pathname.toLowerCase().includes("/html/");
   window.location.href = enSubcarpeta ? "index.html" : "HTML/index.html";
 }
