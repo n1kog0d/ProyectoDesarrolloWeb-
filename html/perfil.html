@@ -34,9 +34,19 @@
 
             <div class="collapse navbar-collapse" id="navbarNav">
 
-            <form class="d-flex mt-3 mt-lg-0" role="search">
-            <input class="form-control me-2" type="search" placeholder="Buscar canción" aria-label="Search"/>
-            </form>
+            <form class="d-flex mt-3 mt-lg-0 position-relative" role="search" onsubmit="return false;">
+    <input 
+        id="buscador" 
+        class="form-control me-2" 
+        type="search" 
+        placeholder="Buscar canción o artista" 
+        aria-label="Search"
+        autocomplete="off">
+    <div id="resultadosBusqueda" 
+         class="list-group position-absolute w-100 shadow" 
+         style="top: 100%; z-index: 1050; max-height: 320px; overflow-y: auto; display: none;">
+    </div>
+</form>
 
                 
 
