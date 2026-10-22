@@ -197,7 +197,7 @@ if (sobreMiVisual != null) {
 let datosCatalogo = [];
 
 // Ajusta la ruta si colocas el JSON en otra ubicación
-const RUTA_JSON = '../javascript/datos.json';
+const RUTA_JSON = '../Json/datos.json';
 
 document.addEventListener('DOMContentLoaded', () => {
 
