@@ -9,7 +9,6 @@
       "rol": "admin",
       "avatar": "../img/avatar-nicolas.webp",
       "seguidores": 67,
-      "seguidos": 69,
       "sobreMi": "Amante del rock y el reggaeton. Siempre buscando el próximo beat.",
       "generos": ["Rock", "Reggaeton", "HipHop"],
       "artistas_favoritos": ["Queen", "Sinaka", "ChysteMC"],
@@ -19,6 +18,26 @@
         { "id": 2, "nombre": "Para estudiar", "canciones": 8  },
         { "id": 3, "nombre": "Gym",           "canciones": 5  }
       ]
+    }, 
+    {
+      "id": 2,
+      "nombre": "Alberto Arriagada",
+      "usuario": "NetanyahuGOD",
+      "email": "aliario67@gmail.com",
+      "password": "g4titAS_t0_DM",
+      "rol": "esclavo",
+      "avatar": "../img/AlbertJew.jpeg",
+      "seguidores": 666,
+      "sobreMi": "Soy un sionista ortodoxo y me gusta ir con recurrencia a los Maid Coffe.",
+      "generos": ["Rock", "Jazz", "Anison"],
+      "artistas_favoritos": ["Queen", "Louis Armstrong", "Lisa"],
+      "mas_escuchadas": ["Bohemian Rhapsody", "Crossing Field", "What a wonderful World"],
+      "playlists": [
+        { "id": 1, "nombre": "Promised World",     "canciones": 6 },
+        { "id": 2, "nombre": "Para meditar", "canciones": 9  },
+        { "id": 3, "nombre": "Bar Mitzvá",           "canciones": 7  }
+      ]
     }
   ]
 }
+    
