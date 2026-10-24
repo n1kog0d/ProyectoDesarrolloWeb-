@@ -3,20 +3,20 @@
     {
       "id": 1,
       "nombre": "Nicolás Zambrano",
-      "usuario": "nicolasz",
+      "usuario": "n1kog0d",
       "email": "nicolasz@gmail.com",
       "password": "N1c0_2026",
       "rol": "admin",
       "avatar": "../img/PerfilNico.webp",
       "seguidores": 67,
-      "sobreMi": "Amante del rock y el reggaeton. Siempre buscando el próximo beat.",
-      "generos": ["Rock", "Reggaeton", "HipHop"],
-      "artistas_favoritos": ["Queen", "Sinaka", "ChysteMC"],
-      "mas_escuchadas": ["Bohemian Rhapsody", "Senda Bellakona", "Convencete"],
+      "sobreMi": "Sandiardium y Cerezarda",
+      "generos": ["Rock", "Pop", "Anison"],
+      "artistas_favoritos": ["Radiohead", "ABBA", "TV Girl"],
+      "mas_escuchadas": ["Let Down", "Duvet", "Slipping Through my fingers"],
       "playlists": [
-        { "id": 1, "nombre": "Favoritas",     "canciones": 12 },
+        { "id": 1, "nombre": "Gym",     "canciones": 12 },
         { "id": 2, "nombre": "Para estudiar", "canciones": 8  },
-        { "id": 3, "nombre": "Gym",           "canciones": 5  }
+        { "id": 3, "nombre": "Feminismo Revolucionario",           "canciones": 5  }
       ]
     }, 
     {
