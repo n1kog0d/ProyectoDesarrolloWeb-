@@ -126,14 +126,14 @@ async function cargarDatosAuth() {
 }
 
 function obtenerUsuariosLocales() {
-  return JSON.parse(localStorage.getItem("usuariosLocales") || "[]");
+  return JSON.parse(sessionStorage.getItem("usuariosLocales") || "[]");
 }
 
 async function obtenerUsuarioCompleto() {
   const sesion = obtenerSesion();
   if (!sesion) return null;
 
-  const parches = JSON.parse(localStorage.getItem("parchesPerfil") || "{}");
+  const parches = JSON.parse(sessionStorage.getItem("parchesPerfil") || "{}");
   const parche = parches[sesion.id] || {};
 
   const locales = obtenerUsuariosLocales();
@@ -244,11 +244,11 @@ if (btnGuardarPerfil != null) {
 
     if (idx >= 0) {
       locales[idx] = { ...locales[idx], ...cambios };
-      localStorage.setItem("usuariosLocales", JSON.stringify(locales));
+      sessionStorage.setItem("usuariosLocales", JSON.stringify(locales));
     } else {
-      const parches = JSON.parse(localStorage.getItem("parchesPerfil") || "{}");
+      const parches = JSON.parse(sessionStorage.getItem("parchesPerfil") || "{}");
       parches[sesion.id] = { ...(parches[sesion.id] || {}), ...cambios };
-      localStorage.setItem("parchesPerfil", JSON.stringify(parches));
+      sessionStorage.setItem("parchesPerfil", JSON.stringify(parches));
     }
 
     const usuario = await obtenerUsuarioCompleto();
@@ -363,7 +363,7 @@ const CLAVE_LOCAL_AUTH  = "usuariosLocales";
 function guardarUsuarioLocal(usuario) {
   const locales = obtenerUsuariosLocales();
   locales.push(usuario);
-  localStorage.setItem(CLAVE_LOCAL_AUTH, JSON.stringify(locales));
+  sessionStorage.setItem(CLAVE_LOCAL_AUTH, JSON.stringify(locales));
 }
 
 async function mostrarAlertalogin(event) {
@@ -532,11 +532,11 @@ async function guardarPlaylistsUsuario(playlists) {
 
   if (idx >= 0) {
     locales[idx] = { ...locales[idx], playlists };
-    localStorage.setItem("usuariosLocales", JSON.stringify(locales));
+    sessionStorage.setItem("usuariosLocales", JSON.stringify(locales));
   } else {
-    const parches = JSON.parse(localStorage.getItem("parchesPerfil") || "{}");
+    const parches = JSON.parse(sessionStorage.getItem("parchesPerfil") || "{}");
     parches[sesion.id] = { ...(parches[sesion.id] || {}), playlists };
-    localStorage.setItem("parchesPerfil", JSON.stringify(parches));
+    sessionStorage.setItem("parchesPerfil", JSON.stringify(parches));
   }
   return true;
 }
