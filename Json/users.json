@@ -37,6 +37,25 @@
         { "id": 2, "nombre": "Para meditar", "canciones": 9  },
         { "id": 3, "nombre": "Bar Mitzvá",           "canciones": 7  }
       ]
+    },
+    {
+      "id": 3,
+      "nombre": "Rafael Garrido",
+      "usuario": "🤫",
+      "email": "rafir9@gmail.com",
+      "password": "puchito_4eveR",
+      "rol": "fantasma",
+      "avatar": "../img/Rafa.png",
+      "seguidores": 69,
+      "sobreMi": "Basti, se volvio loca... ",
+      "generos": ["Rap", "Pop", "Anison"],
+      "artistas_favoritos": ["Mon Laferte", "ChysteMC", "Chico Trujillo"],
+      "mas_escuchadas": ["Tu falta de querer", "I love you a lo vio", "Loca"],
+      "playlists": [
+        { "id": 1, "nombre": "GYM",     "canciones": 6 },
+        { "id": 2, "nombre": "Eurotruck/Rally", "canciones": 9  },
+        { "id": 3, "nombre": "Para arreglar ascensores",           "canciones": 7  }
+      ]
     }
   ]
 }
