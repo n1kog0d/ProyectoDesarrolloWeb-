@@ -454,9 +454,32 @@ function obtenerSesion() {
   return raw ? JSON.parse(raw) : null;
 }
 
-function cerrarSesion() {
+function cerrarSesion(event) {
+  if (event) event.preventDefault();
   sessionStorage.removeItem("usuarioActivo");
   sessionStorage.removeItem("autosave");
   const enSubcarpeta = window.location.pathname.toLowerCase().includes("/html/");
   window.location.href = enSubcarpeta ? "index.html" : "HTML/index.html";
 }
+
+/* ============================================================
+   NAVBAR DINÁMICA — muestra/oculta según sesión activa
+   ============================================================ */
+function actualizarNavbar() {
+  const haySesion    = !!obtenerSesion();
+  const itemLogin    = document.getElementById("navItemLogin");
+  const itemRegister = document.getElementById("navItemRegister");
+  const itemLogout   = document.getElementById("navItemLogout");
+
+  if (haySesion) {
+    if (itemLogin)    itemLogin.classList.add("d-none");
+    if (itemRegister) itemRegister.classList.add("d-none");
+    if (itemLogout)   itemLogout.classList.remove("d-none");
+  } else {
+    if (itemLogin)    itemLogin.classList.remove("d-none");
+    if (itemRegister) itemRegister.classList.remove("d-none");
+    if (itemLogout)   itemLogout.classList.add("d-none");
+  }
+}
+
+document.addEventListener("DOMContentLoaded", actualizarNavbar);

@@ -46,35 +46,29 @@
 </form>
 
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link disabled" aria-disabled="true" href="">
-                            Playlist
-                        </a>
-                    </li>
-                    
-                    <li class="nav-item">
-                        <a class="nav-link" href="perfil.html" id="userName"> 
-                            Perfil 
-                        </a>
-                    </li>
+    <li class="nav-item">
+        <a class="nav-link disabled" aria-disabled="true" href="">Playlist</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="perfil.html" id="userName">Perfil</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="catalogo.html">Catálogo</a>
+    </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link" href="catalogo.html">
-                            Catálogo
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="login.html">
-                            Iniciar sesión
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="register.html">
-                            Registrarse
-                        </a>
-                    </li>
+    <!-- Solo visibles SIN sesión -->
+    <li class="nav-item" id="navItemLogin">
+        <a class="nav-link" href="login.html">Iniciar sesión</a>
+    </li>
+    <li class="nav-item" id="navItemRegister">
+        <a class="nav-link" href="register.html">Registrarse</a>
+    </li>
 
-                </ul>
+    <!-- Solo visible CON sesión. Nace oculto con d-none -->
+    <li class="nav-item d-none" id="navItemLogout">
+        <a class="nav-link" href="#" onclick="cerrarSesion(event)">Cerrar sesión</a>
+    </li>
+</ul>
             </div>
         </div>
     </nav>
