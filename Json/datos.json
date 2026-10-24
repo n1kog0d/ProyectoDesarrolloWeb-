@@ -11,7 +11,7 @@
     {
       "id": 2,
       "titulo": "Senda Bellakona",
-      "artista": "Tulaka",
+      "artista": "Sinaka",
       "genero": "Reggaeton",
       "audio": "../audios/reggaeton.mp3",
       "imagen": "../img/reggaeton.webp"
@@ -30,7 +30,7 @@
       "seguidos": 47,
       "sobreMi": "Amante del rock y el reggaeton. Siempre buscando el próximo beat.",
       "generos": ["Rock", "Reggaeton", "HipHop"],
-      "artistas_favoritos": ["Queen", "Tulaka", "ChysteMC"],
+      "artistas_favoritos": ["Queen", "Sinaka", "ChysteMC"],
       "mas_escuchadas": ["Bohemian Rhapsody", "Senda Bellakona", "Convencete"],
       "playlists": [
         { "id": 1, "nombre": "Favoritas",     "canciones": 12 },
