@@ -13,10 +13,10 @@
       "generos": ["Rock", "Pop", "Anison"],
       "artistas_favoritos": ["Radiohead", "ABBA", "TV Girl"],
       "mas_escuchadas": ["Let Down", "Duvet", "Slipping Through my fingers"],
-      "playlists": [
-        { "id": 1, "nombre": "Gym",     "canciones": 12 },
-        { "id": 2, "nombre": "Para estudiar", "canciones": 8  },
-        { "id": 3, "nombre": "Feminismo Revolucionario",           "canciones": 5  }
+      "playlists": [ 
+        {"id": 1, "nombre": "Favoritas",     "canciones": [1, 2] },
+        { "id": 2, "nombre": "Para estudiar", "canciones": [1]    },
+        { "id": 3, "nombre": "Gym",           "canciones": []     }
       ]
     }, 
     {

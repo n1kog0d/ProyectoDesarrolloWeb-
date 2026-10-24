@@ -4,85 +4,125 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-        <link rel="icon" type="image/png" href="../img/LogoHourtz.png">
-        <title>
-            Hourtz
-        </title>
-            
-            <link 
-                href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
-                    rel="stylesheet">
-            <link rel="stylesheet" href="../css/estilos.css">
+    <link rel="icon" type="image/png" href="../img/LogoHourtz.png">
+    <title>Hourtz — Playlists</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/estilos.css">
 </head>
-                                            
+
 <body>
-    
+
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container-fluid">
-
-            <a class="navbar-brand" href="index.html">
-                Hz
-            </a>
-
-            <button class="navbar-toggler" 
-                    type="button" 
-                    data-bs-toggle="collapse" 
-                    data-bs-target="#navbarNav">
+            <a class="navbar-brand" href="index.html">Hz</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
-
             <div class="collapse navbar-collapse" id="navbarNav">
 
-            <form class="d-flex mt-3 mt-lg-0 position-relative" role="search" onsubmit="return false;">
-    <input 
-        id="buscador" 
-        class="form-control me-2" 
-        type="search" 
-        placeholder="Buscar canción o artista" 
-        aria-label="Search"
-        autocomplete="off">
-    <div id="resultadosBusqueda" 
-         class="list-group position-absolute w-100 shadow" 
-         style="top: 100%; z-index: 1050; max-height: 320px; overflow-y: auto; display: none;">
-    </div>
-</form>
+                <form class="d-flex mt-3 mt-lg-0 position-relative" role="search" onsubmit="return false;">
+                    <input id="buscador" class="form-control me-2" type="search"
+                           placeholder="Buscar canción o artista" autocomplete="off">
+                    <div id="resultadosBusqueda"
+                         class="list-group position-absolute w-100 shadow"
+                         style="top: 100%; z-index: 1050; max-height: 320px; overflow-y: auto; display: none;"></div>
+                </form>
 
                 <ul class="navbar-nav ms-auto">
-    <li class="nav-item">
-        <a class="nav-link disabled" aria-disabled="true" href="">Playlist</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="perfil.html" id="userName">Perfil</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="catalogo.html">Catálogo</a>
-    </li>
-
-    <!-- Solo visibles SIN sesión -->
-    <li class="nav-item" id="navItemLogin">
-        <a class="nav-link" href="login.html">Iniciar sesión</a>
-    </li>
-    <li class="nav-item" id="navItemRegister">
-        <a class="nav-link" href="register.html">Registrarse</a>
-    </li>
-
-    <!-- Solo visible CON sesión. Nace oculto con d-none -->
-    <li class="nav-item d-none" id="navItemLogout">
-        <a class="nav-link" href="#" onclick="cerrarSesion(event)">Cerrar sesión</a>
-    </li>
-</ul>
+                    <li class="nav-item">
+                        <a class="nav-link" href="playlist.html">Playlist</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="perfil.html" id="userName">Perfil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="catalogo.html">Catálogo</a>
+                    </li>
+                    <li class="nav-item" id="navItemLogin">
+                        <a class="nav-link" href="login.html">Iniciar sesión</a>
+                    </li>
+                    <li class="nav-item" id="navItemRegister">
+                        <a class="nav-link" href="register.html">Registrarse</a>
+                    </li>
+                    <li class="nav-item d-none" id="navItemLogout">
+                        <a class="nav-link" href="#" onclick="cerrarSesion(event)">Cerrar sesión</a>
+                    </li>
+                </ul>
             </div>
         </div>
     </nav>
-    <main>
 
+    <br>
+
+    <main>
+        <div class="container py-4">
+
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="fw-bold" style="color: var(--primary);">Mis Playlists</h2>
+                <button class="btn btn-primary" id="btnNuevaPlaylist"
+                        data-bs-toggle="modal" data-bs-target="#modalCrearPlaylist">
+                    + Nueva Playlist
+                </button>
+            </div>
+
+            <div class="row" id="contenedorPlaylists"></div>
+
+            <div id="sinPlaylists" class="text-center text-muted py-5 d-none">
+                <p>No tienes playlists aún.</p>
+            </div>
+
+        </div>
     </main>
 
-    <script 
-        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js">
-    </script>
+    <!-- ============ MODAL CREAR PLAYLIST ============ -->
+    <div class="modal fade" id="modalCrearPlaylist" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content text-light"
+                 style="background-color: rgb(3, 13, 16); border: 1px solid var(--primary);">
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title fw-bold">Nueva Playlist</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <label for="inputNombrePlaylist" class="form-label text-info">Nombre de la playlist</label>
+                    <input type="text" id="inputNombrePlaylist"
+                           class="form-control bg-dark text-light border-secondary"
+                           placeholder="Ej: Mis favoritas">
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="btnCrearPlaylist">Crear</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <!-- ============ MODAL VER PLAYLIST ============ -->
+    <div class="modal fade" id="modalVerPlaylist" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content text-light"
+                 style="background-color: rgb(3, 13, 16); border: 1px solid var(--primary);">
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title fw-bold" id="tituloPlaylistModal">Playlist</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="listaCancionesPlaylist" class="list-group mb-3"></div>
+                    <hr class="border-secondary">
+                    <label class="form-label text-info small">Agregar canción</label>
+                    <input type="text" id="inputAgregarCancion"
+                           class="form-control bg-dark text-light border-secondary mb-2"
+                           placeholder="Buscar por título o artista...">
+                    <div id="resultadosAgregarCancion" class="list-group"></div>
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../javascript/funciones.js"></script>
 </body>
 </html>
