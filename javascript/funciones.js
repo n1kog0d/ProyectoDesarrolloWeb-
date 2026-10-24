@@ -115,7 +115,7 @@ let usuarioActual = null;
 
 async function cargarDatosAuth() {
   try {
-    const res = await fetch("../Json/datos.json");
+    const res = await fetch("../Json/users.json");
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
     return data.usuarios || [];
