@@ -15,6 +15,56 @@
       "genero": "Reggaeton",
       "audio": "../audios/reggaeton.mp3",
       "imagen": "../img/reggaeton.webp"
+    }, 
+    {
+      "id": 3,
+      "titulo": "All Eyes on Me",
+      "artista": "Tupac",
+      "genero": "HipHop",
+      "audio": "../audios/hiphop.mp3",
+      "imagen": "../img/hiphop.webp",
+      "anio": 2022
+    },
+    {
+      "id": 4,
+      "titulo": "Llorando Ausencia",
+      "artista": "Entremares",
+      "genero": "Folklore Chileno",
+      "audio": "../audios/floklore.mp3",
+      "imagen": "../img/ElHuasoYLaLavandera.jpg",
+      "anio": 2020
+    },
+    {
+      "id": 5,
+      "titulo": "Don't Stop Me Now",
+      "artista": "Queen",
+      "genero": "Rock",
+      "audio": "../audios/rock.mp3",
+      "imagen": "../img/queen.jpg",
+      "anio": 1978
+    },
+    {
+      "id": 6,
+      "titulo": "Tusa",
+      "artista": "Karol G & Nicki Minaj",
+      "genero": "Reggaeton",
+      "audio": "../audios/reggaeton.mp3",
+      "imagen": "../img/reggaeton.webp",
+      "anio": 2019
     }
+  ], 
+  "generos": [
+    { "id": 1,  "nombre": "Rock",              "descripcion": "Las mejores canciones de rock.",              "audio": "../audios/rock.mp3",        "imagen": "../img/queen.jpg" },
+    { "id": 2,  "nombre": "Rap",               "descripcion": "Las mejores canciones de rap.",               "audio": "../audios/rap.mp3",         "imagen": "../img/kingV.jpg" },
+    { "id": 3,  "nombre": "Jazz",              "descripcion": "Las mejores canciones de jazz.",              "audio": "../audios/jazz.mp3",        "imagen": "../img/sinatra.jpg" },
+    { "id": 4,  "nombre": "Reggaeton",         "descripcion": "Las mejores canciones de reggaeton.",         "audio": "../audios/reggaeton.mp3",   "imagen": "../img/reggaeton.webp" },
+    { "id": 5,  "nombre": "Metal",             "descripcion": "Las mejores canciones de metal.",             "audio": "../audios/metal.mp3",       "imagen": "../img/metal.jpg" },
+    { "id": 6,  "nombre": "Hip Hop",           "descripcion": "Las mejores canciones de Hip Hop.",           "audio": "../audios/hiphop.mp3",      "imagen": "../img/hiphop.webp" },
+    { "id": 7,  "nombre": "Pop",               "descripcion": "Las mejores canciones de pop.",               "audio": "../audios/pop.mp3",         "imagen": "../img/mjackson.jpg" },
+    { "id": 8,  "nombre": "Folklore Chileno",  "descripcion": "Las mejores canciones de Folklore.",          "audio": "../audios/folklore.mp3",    "imagen": "../img/ElHuasoYLaLavandera.jpg" },
+    { "id": 9,  "nombre": "Cumbia chilena",    "descripcion": "Las mejores canciones de cumbia chilena.",    "audio": "../audios/cumbia.mp3",      "imagen": "../img/chicotrujullo.webp" },
+    { "id": 10, "nombre": "Anison",            "descripcion": "Las mejores canciones del anison.",           "audio": "../audios/anison.mp3",      "imagen": "../img/anison.webp" },
+    { "id": 11, "nombre": "Indie pop",         "descripcion": "Las mejores canciones de indie pop",          "audio": "../audios/indiepop.mp3",    "imagen": "../img/indiepop.webp" },
+    { "id": 12, "nombre": "Musica disco",      "descripcion": "Las mejores canciones de musica disco.",      "audio": "../audios/musicadisco.mp3", "imagen": "../img/musicadisco.jpg" }
   ]
 }
