@@ -459,7 +459,7 @@ function cerrarSesion(event) {
   sessionStorage.removeItem("usuarioActivo");
   sessionStorage.removeItem("autosave");
   const enSubcarpeta = window.location.pathname.toLowerCase().includes("/html/");
-  window.location.href = enSubcarpeta ? "index.html" : "HTML/index.html";
+  window.location.href = enSubcarpeta ? "index_notLogged.html" : "HTML/index_notLogged.html";
 }
 
 /* ============================================================
@@ -480,7 +480,7 @@ function actualizarNavbar() {
     if (itemLogin)    itemLogin.classList.remove("d-none");
     if (itemRegister) itemRegister.classList.remove("d-none");
     if (itemLogout)   itemLogout.classList.add("d-none");
-    if (brandLogo)    brandLogo.href = "index.html";            // <-- 3. Si no hay sesión, lleva a index.html
+    if (brandLogo)    brandLogo.href = "index_notLogged.html";            // <-- 3. Si no hay sesión, lleva a index.html
   }
 }
 
