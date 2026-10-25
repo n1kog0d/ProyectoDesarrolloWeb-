@@ -112,24 +112,6 @@ function colorDeNombre(nombre) {
   return `hsl(${h}, 65%, 55%)`;
 }
 
-async function guardarPlaylistsUsuario(playlists) {
-  const sesion = obtenerSesion();
-  if (!sesion) return false;
-
-  const locales = obtenerUsuariosLocales();
-  const idx = locales.findIndex(u => u.id === sesion.id);
-
-  if (idx >= 0) {
-    locales[idx] = { ...locales[idx], playlists };
-    sessionStorage.setItem("usuariosLocales", JSON.stringify(locales));
-  } else {
-    const parches = JSON.parse(sessionStorage.getItem("parchesPerfil") || "{}");
-    parches[sesion.id] = { ...(parches[sesion.id] || {}), playlists };
-    sessionStorage.setItem("parchesPerfil", JSON.stringify(parches));
-  }
-  return true;
-}
-
 // Render principal 
 async function pintarPlaylists() {
   const contenedor = document.getElementById("contenedorPlaylists");
