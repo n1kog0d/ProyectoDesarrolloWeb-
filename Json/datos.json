@@ -5,7 +5,7 @@
       "titulo": "Bohemian Rhapsody",
       "artista": "Queen",
       "genero": "Rock",
-      "audio": "../audios/rock.mp3",
+      "audio": "../audios/BohemianRhapsody.mp3",
       "imagen": "../img/queen.jpg"
     },
     {
@@ -18,10 +18,10 @@
     }, 
     {
       "id": 3,
-      "titulo": "All Eyes on Me",
-      "artista": "Tupac",
+      "titulo": "The Real Slim Shady",
+      "artista": "Eminem",
       "genero": "HipHop",
-      "audio": "../audios/hiphop.mp3",
+      "audio": "../audios/Slimshady.mp3",
       "imagen": "../img/hiphop.webp",
       "anio": 2022
     },
@@ -40,7 +40,7 @@
       "artista": "Bunny Girl",
       "genero": "Anison",
       "audio": "../audios/anison.mp3",
-      "imagen": "../img/anison.webp",
+      "imagen": "../img/bunnygirl.webp",
       "anio": 2018
     },
     {
@@ -73,10 +73,10 @@
     {
       "id": 9,
       "titulo": "Dancing Queen",
-      "artista": "Abba",
+      "artista": "ABBA",
       "genero": "Música Disco",
       "audio": "../audios/musicadisco.mp3",
-      "imagen": "../img/musicadisco.jpg",
+      "imagen": "../img/abba.jpg",
       "anio": 1976
     }, 
     {
@@ -85,24 +85,24 @@
       "artista": "TV Girl",
       "genero": "Indie pop",
       "audio": "../audios/indiepop.mp3",
-      "imagen": "../img/indiepop.webp",
+      "imagen": "../img/tvgirl.jpg",
       "anio": 2008
     }, 
     {
       "id": 11,
-      "titulo": "Unknown",
-      "artista": "X",
+      "titulo": "Took her to the O",
+      "artista": "King Von",
       "genero": "Rap",
-      "audio": "../audios/rap.mp3",
+      "audio": "../audios/tookhO.mp3",
       "imagen": "../img/kingV.jpg",
       "anio": 2000
     }, 
     {
       "id": 12,
-      "titulo": "X",
-      "artista": "Unknown",
+      "titulo": "Fly me to the moon",
+      "artista": "Frank Sinatra",
       "genero": "Jazz",
-      "audio": "../audios/jazz.mp3",
+      "audio": "../audios/flymtmoon.mp3",
       "imagen": "../img/sinatra.jpg",
       "anio": 2000
     }
