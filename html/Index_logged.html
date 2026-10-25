@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="../css/estilos.css">
 </head>
 
-<body>
+<body x-data="homeApp()" x-init="init()">
 
     <!-- NAVBAR -->
     <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
@@ -39,6 +39,12 @@
                     <li class="nav-item">
                         <a class="nav-link" href="perfil.html" id="userName">Perfil</a>
                     </li>
+                    <li class="nav-item" id="navItemLogin">
+                        <a class="nav-link" href="login.html">Iniciar sesión</a>
+                    </li>
+                    <li class="nav-item" id="navItemRegister">
+                        <a class="nav-link" href="register.html">Registrarse</a>
+                    </li>
                     <li class="nav-item d-none" id="navItemLogout">
                         <a class="nav-link" href="#" onclick="cerrarSesion(event)">Cerrar sesión</a>
                     </li>
@@ -47,8 +53,7 @@
                         <button class="btn btn-primary btn-sm d-flex align-items-center gap-2"
                                 type="button"
                                 data-bs-toggle="offcanvas"
-                                data-bs-target="#reproductorLateral"
-                                aria-controls="reproductorLateral">
+                                data-bs-target="#reproductorLateral">
                             <span>🎵 Reproductor</span>
                         </button>
                     </li>
@@ -56,22 +61,22 @@
             </div>
         </div>
     </nav>
-        <!-- CONTENIDO PRINCIPAL ESTILO SPOTIFY -->
+
+    <!-- CONTENIDO PRINCIPAL ESTILO SPOTIFY -->
     <main class="container py-4">
 
-        <!-- 1. Saludo dinámico y Botón rápido al reproductor -->
+        <!-- 1. Saludo dinámico con Alpine (x-text) -->
         <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
             <div>
-                <h2 class="fw-bold mb-0" id="saludoUsuario">¡Buenas noches!</h2>
+                <h2 class="fw-bold mb-0" x-text="saludo()"></h2>
                 <p class="text-secondary mb-0">Esto es lo que está sonando hoy en Hourtz</p>
             </div>
         </div>
 
-        <!-- 2. Sección de Noticias y Lanzamientos Nuevos -->
+        <!-- 2. Noticias y Nuevos Lanzamientos -->
         <section class="mb-5">
             <h4 class="fw-bold mb-3" style="color: var(--primary);">🔥 Noticias y Nuevos Lanzamientos</h4>
             <div class="row g-3">
-                <!-- Banner principal de novedad -->
                 <div class="col-12 col-lg-7">
                     <div class="p-4 rounded-4 h-100 d-flex flex-column justify-content-between"
                          style="background: linear-gradient(135deg, var(--nav-bg), rgba(77, 49, 216, 0.4)); border: 1px solid var(--borde-claro);">
@@ -83,14 +88,13 @@
                             </p>
                         </div>
                         <div class="mt-3">
-                            <button class="btn btn-primary btn-reproducir-cancion" data-id="2">
+                            <button class="btn btn-primary" @click="reproducirPorId(2, true)">
                                 ▶ Escuchar ahora
                             </button>
                         </div>
                     </div>
                 </div>
 
-                <!-- Columna derecha con 2 noticias breves -->
                 <div class="col-12 col-lg-5 d-flex flex-column gap-3">
                     <div class="p-3 rounded-4 d-flex align-items-center gap-3"
                          style="background-color: var(--panel-bg-suave); border: 1px solid var(--borde-claro);">
@@ -115,93 +119,311 @@
             </div>
         </section>
 
-        <!-- 3. Recomendaciones para ti (Se llena dinámicamente desde datos.json) -->
+        <!-- 3. Recomendaciones para ti (Alpine x-for + filtro por género opcional) -->
         <section class="mb-5">
-            <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
                 <h4 class="fw-bold mb-0" style="color: var(--primary);">🎧 Recomendaciones para ti</h4>
                 <a href="catalogo.html" class="text-secondary text-decoration-none small">Ver catálogo completo →</a>
             </div>
-            <div class="row g-3" id="contenedorRecomendaciones">
-                <!-- JS insertará las tarjetas de canciones aquí -->
+
+            <!-- Estado cargando (x-show) -->
+            <div x-show="cargando" class="text-center py-4">
+                <div class="spinner-border text-primary" role="status"></div>
+            </div>
+
+            <!-- Tarjetas de canciones con x-for -->
+            <div class="row g-3" x-show="!cargando">
+                <template x-for="(cancion, idx) in canciones" :key="cancion.id">
+                    <div class="col-6 col-md-4 col-lg-2">
+                        <div class="card card-recomendacion h-100 p-2 text-light">
+                            <img :src="cancion.imagen" :alt="cancion.titulo"
+                                 class="card-img-top rounded-3"
+                                 style="height: 140px; object-fit: cover;">
+                            <div class="card-body px-1 py-2 d-flex flex-column">
+                                <h6 class="card-title fw-bold mb-1 text-truncate" x-text="cancion.titulo"></h6>
+                                <small class="text-secondary mb-2 text-truncate" x-text="cancion.artista"></small>
+                                <button class="btn btn-sm btn-primary mt-auto w-100"
+                                        @click="seleccionarCancion(idx, true)"
+                                        x-text="(indiceActual === idx && reproduciendo) ? '⏸ Pausar' : '▶ Escuchar'">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </template>
             </div>
         </section>
 
-        <!-- 4. Tus Playlists Rápidas -->
+        <!-- 4. Tus Playlists (Alpine x-for + x-show) -->
         <section class="mb-5">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h4 class="fw-bold mb-0" style="color: var(--primary);">📂 Tus Playlists</h4>
                 <a href="playlist.html" class="text-secondary text-decoration-none small">Administrar playlists →</a>
             </div>
-            <div class="row g-3" id="contenedorPlaylistsHome">
-                <!-- JS insertará las playlists del usuario aquí -->
+
+            <!-- Si no tiene playlists -->
+            <div x-show="playlists.length === 0" class="p-3 rounded-3 text-secondary" style="background: var(--panel-bg-suave);">
+                Aún no tienes playlists creadas. <a href="playlist.html" class="text-info">Crea tu primera playlist aquí</a>.
+            </div>
+
+            <!-- Si tiene playlists -->
+            <div class="row g-3" x-show="playlists.length > 0">
+                <template x-for="pl in playlists" :key="pl.id">
+                    <div class="col-12 col-sm-6 col-lg-3">
+                        <a href="playlist.html" class="text-decoration-none">
+                            <div class="p-3 rounded-3 d-flex align-items-center gap-3 card-recomendacion">
+                                <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
+                                     :style="`width: 48px; height: 48px; background: ${colorPlaylist(pl.nombre)}; color: #000; font-weight: bold;`"
+                                     x-text="(pl.nombre || '?').charAt(0).toUpperCase()">
+                                </div>
+                                <div class="overflow-hidden">
+                                    <h6 class="fw-bold text-light mb-0 text-truncate" x-text="pl.nombre"></h6>
+                                    <small class="text-secondary" x-text="`${totalCanciones(pl)} canciones`"></small>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </template>
             </div>
         </section>
 
     </main>
-        <!-- ============ REPRODUCTOR DESLIZANTE A LA DERECHA (OFFCANVAS) ============ -->
+
+    <!-- ============ REPRODUCTOR DESLIZANTE A LA DERECHA (ALPINE + OFFCANVAS) ============ -->
     <div class="offcanvas offcanvas-end text-light"
          tabindex="-1"
          id="reproductorLateral"
          data-bs-scroll="true"
          data-bs-backdrop="false"
-         aria-labelledby="reproductorLateralLabel"
          style="background-color: var(--background); border-left: 1px solid var(--primary); width: 360px;">
 
         <div class="offcanvas-header border-bottom border-secondary">
-            <h5 class="offcanvas-title fw-bold" id="reproductorLateralLabel" style="color: var(--primary);">
+            <h5 class="offcanvas-title fw-bold" style="color: var(--primary);">
                 🎵 Reproductor Hourtz
             </h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
         </div>
 
         <div class="offcanvas-body d-flex flex-column">
 
-            <!-- Carátula e info de la canción actual -->
+            <!-- Carátula e info reactiva con Alpine -->
             <div class="text-center mb-3">
-                <img id="playerImagen" src="../img/LogoHourtz.png" alt="Portada"
+                <img :src="cancionActual ? cancionActual.imagen : '../img/LogoHourtz.png'"
+                     alt="Portada"
                      class="rounded-4 shadow mb-3"
                      style="width: 180px; height: 180px; object-fit: cover; border: 2px solid var(--borde-claro);">
-                <h5 id="playerTitulo" class="fw-bold mb-0">Selecciona una canción</h5>
-                <p id="playerArtista" class="text-secondary small mb-0">—</p>
+                <h5 class="fw-bold mb-0" x-text="cancionActual ? cancionActual.titulo : 'Selecciona una canción'"></h5>
+                <p class="text-secondary small mb-0" x-text="cancionActual ? `${cancionActual.artista} · ${cancionActual.genero}` : '—'"></p>
             </div>
 
-            <!-- Barra de progreso de la canción -->
+            <!-- Barra de progreso reactiva -->
             <div class="mb-3">
-                <input type="range" id="playerProgreso" class="form-range" value="0" min="0" max="100">
+                <input type="range" class="form-range" min="0" max="100"
+                       :value="progreso"
+                       @input="cambiarTiempo($event.target.value)">
                 <div class="d-flex justify-content-between small text-secondary">
-                    <span id="playerTiempoActual">0:00</span>
-                    <span id="playerDuracion">0:00</span>
+                    <span x-text="formatearTiempo(tiempoActual)"></span>
+                    <span x-text="formatearTiempo(duracion)"></span>
                 </div>
             </div>
 
-            <!-- Controles: Aleatorio, Anterior, Play/Pausa, Siguiente -->
+            <!-- Controles con @click de Alpine -->
             <div class="d-flex justify-content-center align-items-center gap-2 mb-4">
-                <button id="btnShuffle" class="btn btn-outline-secondary btn-sm" title="Modo aleatorio">
+                <button class="btn btn-outline-secondary btn-sm"
+                        :class="{ 'activo': aleatorio }"
+                        @click="aleatorio = !aleatorio"
+                        title="Modo aleatorio">
                     🔀
                 </button>
-                <button id="btnPrev" class="btn btn-outline-light btn-sm" title="Canción anterior">
+                <button class="btn btn-outline-light btn-sm" @click="anterior()" title="Canción anterior">
                     ⏮
                 </button>
-                <button id="btnPlayPause" class="btn btn-primary px-3 py-2" title="Reproducir / Pausar">
-                    ▶
+                <button class="btn btn-primary px-3 py-2" @click="togglePlay()" title="Reproducir / Pausar"
+                        x-text="reproduciendo ? '⏸' : '▶'">
                 </button>
-                <button id="btnNext" class="btn btn-outline-light btn-sm" title="Siguiente canción">
+                <button class="btn btn-outline-light btn-sm" @click="siguiente()" title="Siguiente canción">
                     ⏭
                 </button>
             </div>
 
-            <!-- Lista / Cola de reproducción -->
+            <!-- Lista de reproducción con x-for -->
             <h6 class="fw-bold border-bottom border-secondary pb-2 mb-2" style="color: var(--primary);">
                 Cola de reproducción
             </h6>
-            <div id="playerListaCola" class="list-group list-group-flush overflow-y-auto flex-grow-1" style="max-height: 260px;">
-                <!-- JS pintará aquí la lista de canciones para elegir -->
+            <div class="list-group list-group-flush overflow-y-auto flex-grow-1" style="max-height: 260px;">
+                <template x-for="(c, idx) in canciones" :key="c.id">
+                    <div class="list-group-item item-cola d-flex align-items-center gap-2 py-2"
+                         :class="{ 'activa': indiceActual === idx }"
+                         @click="seleccionarCancion(idx, false)">
+                        <img :src="c.imagen" alt="" class="rounded" style="width: 38px; height: 38px; object-fit: cover;">
+                        <div class="flex-grow-1 overflow-hidden">
+                            <div class="fw-semibold text-truncate small" x-text="c.titulo"></div>
+                            <small class="text-secondary text-truncate d-block" style="font-size: 0.75rem;" x-text="c.artista"></small>
+                        </div>
+                        <span class="small text-info" x-text="(indiceActual === idx && reproduciendo) ? '🔊' : '▶'"></span>
+                    </div>
+                </template>
             </div>
 
         </div>
     </div>
 
+    <!-- COMPONENTE ALPINE (usa las funciones de backend de funciones.js) -->
+    <script>
+        function homeApp() {
+            return {
+                // Estado reactivo de Alpine
+                canciones: [],
+                playlists: [],
+                usuario: null,
+                cargando: true,
+
+                // Estado del reproductor
+                audio: null,
+                indiceActual: -1,
+                reproduciendo: false,
+                aleatorio: false,
+                tiempoActual: 0,
+                duracion: 0,
+                progreso: 0,
+
+                get cancionActual() {
+                    return this.indiceActual >= 0 ? this.canciones[this.indiceActual] : null;
+                },
+
+                async init() {
+                    this.cargando = true;
+                    try {
+                        // 1. Cargamos las canciones directo de datos.json (igual que en catalogo.html)
+                        const res = await fetch('../Json/datos.json');
+                        const data = await res.json();
+                        this.canciones = data.canciones || [];
+
+                        // 2. Cargamos los datos del usuario logueado desde funciones.js
+                        if (typeof obtenerUsuarioCompleto === 'function') {
+                            this.usuario = await obtenerUsuarioCompleto();
+                            this.playlists = this.usuario?.playlists || [];
+                        }
+                    } catch (e) {
+                        console.error('Error cargando datos del Home:', e);
+                    } finally {
+                        this.cargando = false;
+                    }
+
+                    // 3. Inicializar el reproductor de audio
+                    this.audio = new Audio();
+                    this.audio.volume = 0.25;
+
+                    this.audio.addEventListener('timeupdate', () => {
+                        this.tiempoActual = this.audio.currentTime;
+                        this.duracion = this.audio.duration || 0;
+                        this.progreso = this.duracion ? (this.tiempoActual / this.duracion) * 100 : 0;
+                    });
+
+                    this.audio.addEventListener('ended', () => {
+                        this.siguiente();
+                    });
+                },
+
+                saludo() {
+                    const h = new Date().getHours();
+                    let texto = '¡Buenas noches';
+                    if (h >= 6 && h < 12) texto = '¡Buenos días';
+                    else if (h >= 12 && h < 20) texto = '¡Buenas tardes';
+                    const nombre = this.usuario?.nombre || obtenerSesion()?.nombre;
+                    return nombre ? `${texto}, ${nombre}!` : `${texto}!`;
+                },
+
+                seleccionarCancion(idx, abrirMenu = false) {
+                    if (idx < 0 || idx >= this.canciones.length) return;
+
+                    // Si clickea la misma canción que ya está cargada, alterna Play/Pausa
+                    if (this.indiceActual === idx) {
+                        this.togglePlay();
+                    } else {
+                        this.indiceActual = idx;
+                        this.audio.src = this.canciones[idx].audio;
+                        this.audio.play();
+                        this.reproduciendo = true;
+                    }
+
+                    if (abrirMenu) {
+                        const panel = document.getElementById('reproductorLateral');
+                        if (panel) bootstrap.Offcanvas.getOrCreateInstance(panel).show();
+                    }
+                },
+
+                reproducirPorId(id, abrirMenu = false) {
+                    const idx = this.canciones.findIndex(c => c.id === id);
+                    if (idx >= 0) this.seleccionarCancion(idx, abrirMenu);
+                },
+
+                togglePlay() {
+                    if (this.indiceActual === -1 && this.canciones.length > 0) {
+                        this.seleccionarCancion(0, false);
+                        return;
+                    }
+                    if (this.audio.paused) {
+                        this.audio.play();
+                        this.reproduciendo = true;
+                    } else {
+                        this.audio.pause();
+                        this.reproduciendo = false;
+                    }
+                },
+
+                siguiente() {
+                    if (this.canciones.length === 0) return;
+                    if (this.aleatorio && this.canciones.length > 1) {
+                        let azar = this.indiceActual;
+                        while (azar === this.indiceActual) {
+                            azar = Math.floor(Math.random() * this.canciones.length);
+                        }
+                        this.seleccionarCancion(azar, false);
+                    } else {
+                        const sig = (this.indiceActual + 1) % this.canciones.length;
+                        this.seleccionarCancion(sig, false);
+                    }
+                },
+
+                anterior() {
+                    if (this.canciones.length === 0) return;
+                    const ant = (this.indiceActual - 1 + this.canciones.length) % this.canciones.length;
+                    this.seleccionarCancion(ant, false);
+                },
+
+                cambiarTiempo(porcentaje) {
+                    if (this.duracion > 0) {
+                        this.audio.currentTime = (porcentaje / 100) * this.duracion;
+                    }
+                },
+
+                formatearTiempo(seg) {
+                    if (!seg || isNaN(seg)) return '0:00';
+                    const m = Math.floor(seg / 60);
+                    const s = Math.floor(seg % 60);
+                    return `${m}:${s < 10 ? '0' : ''}${s}`;
+                },
+
+                // Helpers que delegan a funciones.js
+                               colorPlaylist(nombre) {
+                    const txt = nombre || 'playlist';
+                    let hash = 0;
+                    for (let i = 0; i < txt.length; i++) {
+                        hash = txt.charCodeAt(i) + ((hash << 5) - hash);
+                    }
+                    return `hsl(${Math.abs(hash) % 360}, 65%, 55%)`;
+                },
+                totalCanciones(pl) {
+                    if (Array.isArray(pl.canciones)) return pl.canciones.length;
+                    if (typeof pl.canciones === 'number') return pl.canciones;
+                    return 0;
+                }
+        }
+    }
+    </script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
     <script src="../javascript/funciones.js"></script>
 </body>
 
