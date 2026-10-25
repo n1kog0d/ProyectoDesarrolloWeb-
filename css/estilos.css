@@ -159,3 +159,46 @@ body {
 #tarjetaPlaylist{
     background-color: aquamarine;
 }
+
+/* ============================================================
+   ESTILOS HOME LOGUEADO Y REPRODUCTOR LATERAL
+   ============================================================ */
+
+/* Tarjetas de recomendaciones estilo Spotify */
+.card-recomendacion {
+    background-color: var(--panel-bg-suave);
+    border: 1px solid var(--borde-claro);
+    border-radius: 14px;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.card-recomendacion:hover {
+    transform: translateY(-4px);
+    background-color: var(--panel-bg-fuerte);
+}
+
+/* Ítems de la cola de reproducción dentro del Offcanvas */
+.item-cola {
+    background-color: transparent !important;
+    color: var(--text-principal) !important;
+    border-bottom: 1px solid var(--borde-claro) !important;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+
+.item-cola:hover {
+    background-color: var(--panel-bg-suave) !important;
+}
+
+/* Canción que está sonando actualmente en la cola */
+.item-cola.activa {
+    background-color: var(--panel-bg-fuerte) !important;
+    border-left: 3px solid var(--primary) !important;
+}
+
+/* Botón de modo aleatorio cuando está activado */
+#btnShuffle.activo {
+    background-color: var(--primary);
+    color: var(--btn-text);
+    border-color: var(--primary);
+}
