@@ -13,9 +13,9 @@
       "artistas_favoritos": ["Radiohead", "ABBA", "TV Girl"],
       "mas_escuchadas": ["Let Down", "Duvet", "Slipping Through my fingers"],
       "playlists": [ 
-        {"id": 1, "nombre": "Favoritas",     "canciones": [1, 2] },
-        { "id": 2, "nombre": "Para estudiar", "canciones": [1]    },
-        { "id": 3, "nombre": "Gym",           "canciones": []     }
+        {"id": 1, "nombre": "Favoritas","canciones": [1, 2] },
+        { "id": 2, "nombre": "Para estudiar","canciones": [1]},
+        { "id": 3, "nombre": "Gym","canciones": []}
       ]
     }, 
     {
@@ -31,9 +31,9 @@
       "artistas_favoritos": ["Queen", "Louis Armstrong", "Lisa"],
       "mas_escuchadas": ["Bohemian Rhapsody", "Crossing Field", "What a wonderful World"],
       "playlists": [
-        { "id": 1, "nombre": "Promised World",     "canciones": [1, 2] },
+        { "id": 1, "nombre": "Promised World","canciones": [1, 2] },
         { "id": 2, "nombre": "Para meditar", "canciones": []  },
-        { "id": 3, "nombre": "Bar Mitzvá",           "canciones": []  }
+        { "id": 3, "nombre": "Bar Mitzvá","canciones": []  }
       ]
     },
     {
@@ -49,8 +49,8 @@
       "artistas_favoritos": ["Mon Laferte", "ChysteMC", "Chico Trujillo"],
       "mas_escuchadas": ["Tu falta de querer", "I love you a lo vio", "Loca"],
       "playlists": [
-        { "id": 1, "nombre": "GYM",     "canciones": [1, 2,3,4,5,6,7,8] },
-        { "id": 2, "nombre": "Eurotruck/Rally", "canciones": [12]  },
+        { "id": 1, "nombre": "GYM","canciones": [1, 2,3,4,5,6,7,8] },
+        { "id": 2, "nombre": "Eurotruck/Rally", "canciones": [12] },
         { "id": 3, "nombre": "Para arreglar ascensores","canciones": [10]  }
       ]
     }, 
@@ -67,7 +67,7 @@
       "artistas_favoritos": ["Iron Maiden", "Taylor Swift", "Kanye West"],
       "mas_escuchadas": ["GOZALO - Ariis", "I knew you were trouble", "American Boy"],
       "playlists": [
-        { "id": 1, "nombre": "Coding For Seniors",     "canciones": [] },
+        { "id": 1, "nombre": "Coding For Seniors","canciones": [] },
         { "id": 2, "nombre": "Lock In Commits", "canciones": []  },
         { "id": 3, "nombre": "Kirkzazo (We are Charlie kirk)","canciones": []  }
       ]

@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="../css/estilos.css">
 </head>
 
-<body>
+<body x-data="perfilApp()" x-init="init()">
 
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container-fluid">
@@ -189,7 +189,7 @@
         </div>
     </main>
 
-    <div class="modal fade" id="modalEditarPerfil" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+       <div class="modal fade" id="modalEditarPerfil" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
 
             <div class="modal-content text-light" style="background-color: rgb(3, 13, 16); border: 1px solid var(--primary);">
@@ -199,30 +199,173 @@
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
-                <div class="modal-body">
-                    <form id="formularioPerfil">
+                <!-- FORMULARIO CON @submit.prevent Y x-model -->
+                <form @submit.prevent="guardarCambios()" novalidate>
+                    <div class="modal-body">
+
+                        <div class="mb-3">
+                            <label class="form-label text-info">Nombre visible *</label>
+                            <input type="text"
+                                   class="form-control bg-dark text-light border-secondary"
+                                   placeholder="Tu nombre"
+                                   x-model="form.nombre">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="inputSobreMi" class="form-label text-info">Sobre mí * (mínimo 10 caracteres)</label>
+                            <textarea class="form-control bg-dark text-light border-secondary"
+                                      id="inputSobreMi"
+                                      rows="3"
+                                      placeholder="Escribe algo sobre ti..."
+                                      x-model="form.sobreMi"></textarea>
+                        </div>
 
                         <div class="mb-3">
                             <label for="inputFoto" class="form-label text-info">Nueva foto de perfil (Opcional)</label>
-                            <input class="form-control bg-dark text-light border-secondary" type="file" id="inputFoto" accept="image/*">
+                            <input class="form-control bg-dark text-light border-secondary"
+                                   type="file"
+                                   id="inputFoto"
+                                   accept="image/*"
+                                   @change="cargarFoto($event)">
                         </div>
 
-                        <div class="mb-3">
-                            <label for="inputSobreMi" class="form-label text-info">Sobre mí</label>
-                            <textarea class="form-control bg-dark text-light border-secondary" id="inputSobreMi" rows="3" placeholder="Escribe algo sobre ti..."></textarea>
+                        <!-- Mensaje de error de validación (x-show) -->
+                        <div class="alert alert-danger py-2 mb-0"
+                             x-show="errorForm !== ''"
+                             x-text="errorForm">
                         </div>
 
-                    </form>
-                </div>
+                        <!-- Mensaje de confirmación (x-show) -->
+                        <div class="alert alert-success py-2 mb-0"
+                             x-show="exitoForm !== ''"
+                             x-text="exitoForm">
+                        </div>
 
-                <div class="modal-footer border-secondary">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" id="btnGuardarPerfil">Guardar Cambios</button>
-                </div>
+                    </div>
+
+                    <div class="modal-footer border-secondary">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    </div>
+                </form>
+
             </div>
         </div>
     </div>
+    
+    <script>
+        function perfilApp() {
+            return {
+                usuario: null,
+                form: {
+                    nombre: '',
+                    sobreMi: '',
+                    nuevaFotoBase64: null
+                },
+                errorForm: '',
+                exitoForm: '',
 
+                async init() {
+                    if (typeof obtenerUsuarioCompleto === 'function') {
+                        this.usuario = await obtenerUsuarioCompleto();
+                    }
+                    this.rellenarFormulario();
+
+                    // Cada vez que se abre el modal, limpiamos alertas y cargamos los datos actuales
+                    const modalEl = document.getElementById('modalEditarPerfil');
+                    if (modalEl) {
+                        modalEl.addEventListener('show.bs.modal', () => {
+                            this.errorForm = '';
+                            this.exitoForm = '';
+                            this.rellenarFormulario();
+                        });
+                    }
+                },
+
+                rellenarFormulario() {
+                    if (this.usuario) {
+                        this.form.nombre = this.usuario.nombre || '';
+                        this.form.sobreMi = this.usuario.sobreMi || '';
+                        this.form.nuevaFotoBase64 = null;
+                    }
+                },
+
+                cargarFoto(event) {
+                    const archivo = event.target.files[0];
+                    if (!archivo) return;
+                    const lector = new FileReader();
+                    lector.onload = e => {
+                        this.form.nuevaFotoBase64 = e.target.result;
+                    };
+                    lector.readAsDataURL(archivo);
+                },
+
+                async guardarCambios() {
+                    this.errorForm = '';
+                    this.exitoForm = '';
+
+                    const sesion = typeof obtenerSesion === 'function' ? obtenerSesion() : null;
+                    if (!sesion) {
+                        this.errorForm = 'Debes iniciar sesión para editar tu perfil.';
+                        return;
+                    }
+
+                    const nombreLimpio = this.form.nombre.trim();
+                    const bioLimpia = this.form.sobreMi.trim();
+
+                    // Validaciones requeridas por la rúbrica
+                    if (!nombreLimpio || !bioLimpia) {
+                        this.errorForm = 'Error: El nombre y la descripción "Sobre mí" son obligatorios.';
+                        return;
+                    }
+
+                    if (nombreLimpio.length < 3) {
+                        this.errorForm = 'Error: El nombre debe tener al menos 3 caracteres.';
+                        return;
+                    }
+
+                    if (bioLimpia.length < 10) {
+                        this.errorForm = 'Error: La sección "Sobre mí" debe tener al menos 10 caracteres.';
+                        return;
+                    }
+
+                    // Guardar cambios en memoria de la sesión
+                    const cambios = {
+                        nombre: nombreLimpio,
+                        sobreMi: bioLimpia
+                    };
+                    if (this.form.nuevaFotoBase64) {
+                        cambios.avatar = this.form.nuevaFotoBase64;
+                    }
+
+                    const locales = obtenerUsuariosLocales();
+                    const idx = locales.findIndex(u => u.id === sesion.id);
+
+                    if (idx >= 0) {
+                        locales[idx] = { ...locales[idx], ...cambios };
+                        sessionStorage.setItem('usuariosLocales', JSON.stringify(locales));
+                    } else {
+                        const parches = JSON.parse(sessionStorage.getItem('parchesPerfil') || '{}');
+                        parches[sesion.id] = { ...(parches[sesion.id] || {}), ...cambios };
+                        sessionStorage.setItem('parchesPerfil', JSON.stringify(parches));
+                    }
+
+                    // Actualizar también el nombre en la sesión y navbar
+                    sesion.nombre = nombreLimpio;
+                    sessionStorage.setItem('usuarioActivo', JSON.stringify(sesion));
+                    sessionStorage.setItem('autosave', nombreLimpio);
+                    const navUser = document.getElementById('userName');
+                    if (navUser) navUser.textContent = nombreLimpio;
+
+                    // Refrescar la vista del perfil sin recargar la página
+                    this.usuario = await obtenerUsuarioCompleto();
+                    pintarPerfil(this.usuario);
+
+                    this.exitoForm = '¡Perfil actualizado correctamente! (Los cambios se mantienen en memoria durante la sesión).';
+                }
+            };
+        }
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
     <script src="../javascript/funciones.js"></script>
