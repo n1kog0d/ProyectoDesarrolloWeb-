@@ -21,12 +21,47 @@
             </button>
 
             <div class="collapse navbar-collapse" id="navbarNav">
-                <form class="d-flex mt-3 mt-lg-0 position-relative" role="search" onsubmit="return false;">
-                    <input id="buscador" class="form-control me-2" type="search"
-                           placeholder="Buscar canción o artista" autocomplete="off">
-                    <div id="resultadosBusqueda"
-                         class="list-group position-absolute w-100 shadow"
-                         style="top: 100%; z-index: 1050; max-height: 320px; overflow-y: auto; display: none;"></div>
+                <form class="d-flex mt-3 mt-lg-0 ms-lg-3 position-relative flex-grow-1" style="max-width: 450px;" role="search" @submit.prevent @click.outside="busquedaNav = ''">
+                    <input class="form-control me-2" type="search"
+                           placeholder="Buscar canción o artista"
+                           autocomplete="off"
+                           x-model="busquedaNav"
+                           @keydown.escape="busquedaNav = ''">
+
+                    <!-- Lista desplegable de resultados con Alpine -->
+                    <div class="list-group position-absolute w-100 shadow"
+                         style="top: 100%; z-index: 1050; max-height: 320px; overflow-y: auto;"
+                         x-show="busquedaNav.trim().length > 0">
+
+                        <!-- Si no hay coincidencias -->
+                        <div class="list-group-item bg-dark text-secondary small"
+                             x-show="resultadosNav.length === 0">
+                            Sin resultados para "<span x-text="busquedaNav"></span>"
+                        </div>
+
+                        <!-- Resultados encontrados -->
+                        <template x-for="c in resultadosNav" :key="c.id">
+                            <div class="list-group-item bg-dark text-light border-secondary d-flex align-items-center gap-2">
+                                <img :src="c.imagen" alt="" class="rounded" style="width: 36px; height: 36px; object-fit: cover;">
+                                <div class="flex-grow-1 overflow-hidden">
+                                    <div class="fw-bold small text-truncate" x-text="c.titulo"></div>
+                                    <small class="text-secondary d-block text-truncate" x-text="`${c.artista} · ${c.genero}`"></small>
+                                </div>
+                                <button type="button"
+                                        class="btn btn-sm btn-primary py-1 px-2"
+                                        @click="reproducirCancion(c, true); busquedaNav = ''"
+                                        title="Reproducir ahora">
+                                    ▶
+                                </button>
+                                <button type="button"
+                                        class="btn btn-sm btn-outline-info py-1 px-2"
+                                        @click="agregarACola(c); busquedaNav = ''"
+                                        title="Agregar a la lista de reproducción">
+                                    + Cola
+                                </button>
+                            </div>
+                        </template>
+                    </div>
                 </form>
 
                 <ul class="navbar-nav ms-auto align-items-lg-center">
@@ -255,15 +290,33 @@
                     ⏭
                 </button>
             </div>
-
-                       <!-- Lista de reproducción con x-for -->
-            <div class="d-flex justify-content-between align-items-center border-bottom border-secondary pb-2 mb-2">
-                <h6 class="fw-bold mb-0" style="color: var(--primary);" x-text="`Cola (${nombreCola})`"></h6>
-                <button class="btn btn-link btn-sm text-secondary text-decoration-none p-0"
-                        @click="restaurarColaCompleta()"
-                        title="Cargar todas las canciones">
-                    Ver todas
+                        <!-- Control de Volumen con Alpine -->
+            <div class="d-flex align-items-center gap-2 mb-4 px-2">
+                <button class="btn btn-sm text-light p-0 border-0"
+                        @click="toggleMute()"
+                        title="Silenciar / Activar sonido"
+                        x-text="volumen == 0 ? '🔇' : (volumen < 50 ? '🔉' : '🔊')">
                 </button>
+                <input type="range" class="form-range" min="0" max="100"
+                       x-model="volumen"
+                       @input="cambiarVolumen()">
+                <small class="text-secondary" style="width: 38px; text-align: right;" x-text="`${volumen}%`"></small>
+            </div>
+
+            <!-- Lista de reproducción con x-for -->
+            <div class="d-flex justify-content-between align-items-center border-bottom border-secondary pb-2 mb-2">
+                <h6 class="fw-bold mb-0" style="color: var(--primary);" x-text="`Cola (${cola.length})`"></h6>
+                <button class="btn btn-outline-danger btn-sm py-0 px-2"
+                        x-show="cola.length > 0"
+                        @click="vaciarCola()"
+                        title="Borrar todas las canciones de la lista">
+                    🗑 Vaciar
+                </button>
+            </div>
+
+            <!-- Mensaje cuando la cola está vacía (x-show) -->
+            <div x-show="cola.length === 0" class="text-center text-secondary my-auto py-4 small">
+                Tu cola está vacía.<br>Agrega canciones con el botón <strong>+ Cola</strong>.
             </div>
 
             <div class="list-group list-group-flush overflow-y-auto flex-grow-1" style="max-height: 260px;">
@@ -280,14 +333,13 @@
                         <button class="btn btn-sm text-secondary p-0 px-1"
                                 @click.stop="quitarDeCola(idx)"
                                 title="Quitar de la cola">
-                            ×
+                            
                         </button>
                     </div>
                 </template>
             </div>
         </div>
     </div>
-    
     <!-- COMPONENTE ALPINE (usa las funciones de backend de funciones.js) -->
     <script>
         function homeApp() {
@@ -297,6 +349,7 @@
                 playlists: [],
                 usuario: null,
                 cargando: true,
+                busquedaNav: '', // <-- 1. Texto que escribe el usuario en la barra de arriba
 
                 // Cola y estado del reproductor
                 cola: [],
@@ -308,6 +361,19 @@
                 tiempoActual: 0,
                 duracion: 0,
                 progreso: 0,
+                volumen: 25,       // <-- Volumen inicial (25%)
+                volumenPrevio: 25, // <-- Para recordar el volumen al silenciar
+
+                // <-- 2. Filtra las canciones en vivo según lo que escriba en la barra
+                get resultadosNav() {
+                    const t = this.busquedaNav.toLowerCase().trim();
+                    if (!t) return [];
+                    return this.catalogo.filter(c =>
+                        (c.titulo || '').toLowerCase().includes(t) ||
+                        (c.artista || '').toLowerCase().includes(t) ||
+                        (c.genero || '').toLowerCase().includes(t)
+                    ).slice(0, 8);
+                },
 
                 get cancionActual() {
                     return (this.indiceActual >= 0 && this.indiceActual < this.cola.length)
@@ -321,7 +387,7 @@
                         const res = await fetch('../Json/datos.json');
                         const data = await res.json();
                         this.catalogo = data.canciones || [];
-                        this.cola = [...this.catalogo]; // Al inicio la cola tiene todas las canciones
+                        this.cola = []; // Al inicio la cola empieza vacía
 
                         if (typeof obtenerUsuarioCompleto === 'function') {
                             this.usuario = await obtenerUsuarioCompleto();
@@ -434,9 +500,16 @@
                     this.seleccionarDeCola(0, true);
                 },
 
-                restaurarColaCompleta() {
-                    this.cola = [...this.catalogo];
+                vaciarCola() {
+                    this.cola = [];
                     this.nombreCola = 'General';
+                    this.audio.pause();
+                    this.audio.currentTime = 0;
+                    this.reproduciendo = false;
+                    this.indiceActual = -1;
+                    this.tiempoActual = 0;
+                    this.duracion = 0;
+                    this.progreso = 0;
                 },
 
                 abrirOffcanvas() {
@@ -482,6 +555,23 @@
                     if (this.duracion > 0) {
                         this.audio.currentTime = (porcentaje / 100) * this.duracion;
                     }
+                },
+
+                cambiarVolumen() {
+                    if (this.audio) {
+                        // En HTML5 Audio el volumen va de 0.0 a 1.0, por eso dividimos por 100
+                        this.audio.volume = this.volumen / 100;
+                    }
+                },
+
+                toggleMute() {
+                    if (this.volumen > 0) {
+                        this.volumenPrevio = this.volumen;
+                        this.volumen = 0;
+                    } else {
+                        this.volumen = this.volumenPrevio || 25;
+                    }
+                    this.cambiarVolumen();
                 },
 
                 formatearTiempo(seg) {

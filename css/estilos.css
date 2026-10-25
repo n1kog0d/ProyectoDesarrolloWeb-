@@ -31,10 +31,12 @@ body {
 
 
 .navbar {
-    background-color: var(--nav-bg)  ;
+    background-color: var(--nav-bg);
     padding: 10px 20px;
     border-bottom: 1px solid var(--borde-oscuro);
     backdrop-filter: blur(10px);
+    position: relative;
+    z-index: 1050;
 }
 
 .navbar-brand, .navbar a {
@@ -157,7 +159,7 @@ body {
 }
 
 #tarjetaPlaylist{
-    background-color: aquamarine;
+    color: var(--btn-text);
 }
 
 /* ============================================================
