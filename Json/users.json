@@ -6,7 +6,6 @@
       "usuario": "n1kog0d",
       "email": "nicolasz@gmail.com",
       "password": "N1c0_2026",
-      "rol": "admin",
       "avatar": "../img/PerfilNico.webp",
       "seguidores": 67,
       "sobreMi": "Sandiardium y Cerezarda",
@@ -25,7 +24,6 @@
       "usuario": "NetanyahuGOD",
       "email": "aliario67@gmail.com",
       "password": "g4titAS_t0_DM",
-      "rol": "esclavo",
       "avatar": "../img/AlbertJew.jpeg",
       "seguidores": 666,
       "sobreMi": "Soy un sionista ortodoxo y me gusta ir con recurrencia a los Maid Coffe.",
@@ -44,7 +42,6 @@
       "usuario": "🤫",
       "email": "rafir9@gmail.com",
       "password": "puchito_4eveR",
-      "rol": "fantasma",
       "avatar": "../img/Rafa.png",
       "seguidores": 69,
       "sobreMi": "Basti, se volvio loca... ",
@@ -55,6 +52,24 @@
         { "id": 1, "nombre": "GYM",     "canciones": 6 },
         { "id": 2, "nombre": "Eurotruck/Rally", "canciones": 9  },
         { "id": 3, "nombre": "Para arreglar ascensores",           "canciones": 7  }
+      ]
+    }, 
+    {
+      "id": 4,
+      "nombre": "Jonathan Frez",
+      "usuario": "Jony Fresh",
+      "email": "jonathanfz@gmail.com",
+      "password": "JuanDu4rt3_<3",
+      "avatar": "../img/JONATHAN-FREZ-UDP.jpg",
+      "seguidores": 420,
+      "sobreMi": " Pupilo de Linus Torvalds y Maestro de Chien-Fu Chen",
+      "generos": ["Rock", "Pop-2000", "Phonk"],
+      "artistas_favoritos": ["Iron Maiden", "Taylor Swift", "Kanye West"],
+      "mas_escuchadas": ["GOZALO - Ariis", "I knew you were trouble", "American Boy"],
+      "playlists": [
+        { "id": 1, "nombre": "Coding For Seniors",     "canciones": 6 },
+        { "id": 2, "nombre": "Lock In Commits", "canciones": 9  },
+        { "id": 3, "nombre": "Kirkzazo (We are Charlie kirk)",           "canciones": 7  }
       ]
     }
   ]
