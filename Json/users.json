@@ -67,9 +67,9 @@
       "artistas_favoritos": ["Iron Maiden", "Taylor Swift", "Kanye West"],
       "mas_escuchadas": ["GOZALO - Ariis", "I knew you were trouble", "American Boy"],
       "playlists": [
-        { "id": 1, "nombre": "Coding For Seniors","canciones": [] },
+        { "id": 1, "nombre": "Coding For Seniors","canciones": [10, 11] },
         { "id": 2, "nombre": "Lock In Commits", "canciones": []  },
-        { "id": 3, "nombre": "Kirkzazo (We are Charlie kirk)","canciones": []  }
+        { "id": 3, "nombre": "Pressing It","canciones": []  }
       ]
     }
   ]
