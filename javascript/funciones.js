@@ -288,37 +288,62 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-// ============================================================
-// AUTENTICACIÓN
-// ============================================================
-const CLAVE_SESION_AUTH = "usuarioActivo";
-const CLAVE_LOCAL_AUTH  = "usuariosLocales";
+/* ============================================================
+   AUTENTICACIÓN — lee users.json + localStorage
+   ============================================================ */
+
+const RUTA_USERS      = "../Json/users.json";
+const CLAVE_SESION    = "usuarioActivo";
+const CLAVE_LOCAL     = "usuariosLocales";
+
+// ---------- Carga de usuarios ----------
+async function cargarUsuariosJSON() {
+  try {
+    const res = await fetch(RUTA_USERS);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    return Array.isArray(data) ? data : (data.usuarios || []);
+  } catch (e) {
+    console.error("Error leyendo users.json:", e);
+    return [];
+  }
+}
+
+// ⚠️ localStorage, NO sessionStorage (sobrevive al cerrar el navegador)
+function obtenerUsuariosLocales() {
+  return JSON.parse(localStorage.getItem(CLAVE_LOCAL) || "[]");
+}
 
 function guardarUsuarioLocal(usuario) {
   const locales = obtenerUsuariosLocales();
   locales.push(usuario);
-  sessionStorage.setItem(CLAVE_LOCAL_AUTH, JSON.stringify(locales));
+  localStorage.setItem(CLAVE_LOCAL, JSON.stringify(locales));
 }
 
+// Une JSON + localStorage en un solo array
+async function obtenerTodosLosUsuarios() {
+  const json = await cargarUsuariosJSON();
+  const locales = obtenerUsuariosLocales();
+  return [...json, ...locales];
+}
+
+// ---------- LOGIN ----------
 async function mostrarAlertalogin(event) {
   event.preventDefault();
 
   const emailInput = document.getElementById("email");
   const passInput = document.getElementById("password")
-                 || document.querySelector('#login input[type="password"]');
+                 || document.querySelector('input[type="password"]');
 
   if (!emailInput || !passInput) {
     alert("No se encontraron los campos del formulario.");
     return;
   }
 
-  const email = emailInput.value.trim().toLowerCase();
+  const email    = emailInput.value.trim().toLowerCase();
   const password = passInput.value;
 
-  const usuariosJSON = await cargarDatosAuth();
-  const usuariosLocales = obtenerUsuariosLocales();
-  const todos = [...usuariosJSON, ...usuariosLocales];
-
+  const todos = await obtenerTodosLosUsuarios();
   const usuario = todos.find(u =>
     (u.email   && u.email.toLowerCase()   === email) ||
     (u.usuario && u.usuario.toLowerCase() === email)
@@ -327,20 +352,26 @@ async function mostrarAlertalogin(event) {
   if (!usuario) { alert("No existe una cuenta con ese correo o usuario."); return; }
   if (usuario.password !== password) { alert("Contraseña incorrecta."); return; }
 
+  // Crear sesión
   const sesion = {
-    id: usuario.id, nombre: usuario.nombre, usuario: usuario.usuario,
-    email: usuario.email, rol: usuario.rol || "user"
+    id: usuario.id,
+    nombre: usuario.nombre,
+    usuario: usuario.usuario,
+    email: usuario.email,
+    rol: usuario.rol || "user",
+    avatar: usuario.avatar || "../img/usuario-sin-foto.jpg"
   };
-  sessionStorage.setItem(CLAVE_SESION_AUTH, JSON.stringify(sesion));
+  sessionStorage.setItem(CLAVE_SESION, JSON.stringify(sesion));
   sessionStorage.setItem("autosave", usuario.nombre);
 
   const toastHTML = document.getElementById("alertaExitologin");
   if (toastHTML) new bootstrap.Toast(toastHTML).show();
 
-  setTimeout(() => { window.location.href = "index_logged.html"; }, 2000);
+  setTimeout(() => { window.location.href = "Index_logged.html"; }, 1500);
 }
 
-function mostrarAlertaregister(event) {
+// ---------- REGISTRO ----------
+async function mostrarAlertaregister(event) {
   event.preventDefault();
 
   const nombre = document.getElementById("nombre")?.value.trim();
@@ -349,17 +380,38 @@ function mostrarAlertaregister(event) {
   const pass = document.getElementById("contraseña")?.value;
   const passC = document.getElementById("contraseñaC")?.value;
 
-  if (!nombre || !usuario || !email || !pass || !passC) { alert("Faltan campos obligatorios."); return; }
-  if (pass !== passC) { alert("Las contraseñas no coinciden."); return; }
-  if (pass.length < 8) { alert("La contraseña debe tener al menos 8 caracteres."); return; }
-
-  const locales = obtenerUsuariosLocales();
-  if (locales.some(u => u.email.toLowerCase() === email)) {
-    alert("Ese correo ya está registrado en este navegador.");
+  // Validaciones de campos
+  if (!nombre || !usuario || !email || !pass || !passC) {
+    alert("Faltan campos obligatorios.");
+    return;
+  }
+  if (pass !== passC) {
+    alert("Las contraseñas no coinciden.");
+    return;
+  }
+  if (pass.length < 8) {
+    alert("La contraseña debe tener al menos 8 caracteres.");
+    return;
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    alert("El correo no tiene un formato válido.");
     return;
   }
 
-  guardarUsuarioLocal({
+  // Validar duplicados contra JSON + localStorage
+  const todos = await obtenerTodosLosUsuarios();
+
+  if (todos.some(u => u.email && u.email.toLowerCase() === email)) {
+    alert("Ese correo ya está registrado. Inicia sesión o usa otro correo.");
+    return;
+  }
+  if (todos.some(u => u.usuario && u.usuario.toLowerCase() === usuario.toLowerCase())) {
+    alert("Ese nombre de usuario ya está en uso. Elige otro.");
+    return;
+  }
+
+  // Crear usuario completo
+  const nuevoUsuario = {
     id: Date.now(),
     nombre: nombre,
     usuario: usuario,
@@ -374,49 +426,67 @@ function mostrarAlertaregister(event) {
     artistas_favoritos: [],
     mas_escuchadas: [],
     playlists: []
-  });
+  };
+
+  guardarUsuarioLocal(nuevoUsuario);
+
+  // ⚠️ Crear sesión automáticamente (esto es lo que faltaba)
+  const sesion = {
+    id: nuevoUsuario.id,
+    nombre: nuevoUsuario.nombre,
+    usuario: nuevoUsuario.usuario,
+    email: nuevoUsuario.email,
+    rol: nuevoUsuario.rol,
+    avatar: nuevoUsuario.avatar
+  };
+  sessionStorage.setItem(CLAVE_SESION, JSON.stringify(sesion));
+  sessionStorage.setItem("autosave", nuevoUsuario.nombre);
 
   const toastHTML = document.getElementById("alertaExitoregister");
   if (toastHTML) new bootstrap.Toast(toastHTML).show();
 
-  setTimeout(() => { window.location.href = "login.html"; }, 2000);
+  // Redirigir a la home logueada, no al login
+  setTimeout(() => { window.location.href = "Index_logged.html"; }, 1500);
 }
 
-// ---------- Utilidades de sesión ----------
+// ---------- SESIÓN ----------
 function obtenerSesion() {
-  const raw = sessionStorage.getItem("usuarioActivo");
+  const raw = sessionStorage.getItem(CLAVE_SESION);
   return raw ? JSON.parse(raw) : null;
 }
 
 function cerrarSesion(event) {
   if (event) event.preventDefault();
-  sessionStorage.removeItem("usuarioActivo");
+  sessionStorage.removeItem(CLAVE_SESION);
   sessionStorage.removeItem("autosave");
-  const enSubcarpeta = window.location.pathname.toLowerCase().includes("/html/");
-  window.location.href = enSubcarpeta ? "index_notLogged.html" : "HTML/index_notLogged.html";
+  window.location.href = "index_notLogged.html";
 }
 
-/* ============================================================
-   NAVBAR DINÁMICA — muestra/oculta según sesión activa
-   ============================================================ */
+// ---------- NAVBAR DINÁMICA ----------
 function actualizarNavbar() {
-  const haySesion    = !!obtenerSesion();
+  const sesion = obtenerSesion();
+  const haySesion = !!sesion;
+
   const itemLogin    = document.getElementById("navItemLogin");
   const itemRegister = document.getElementById("navItemRegister");
   const itemLogout   = document.getElementById("navItemLogout");
-  const brandLogo    = document.querySelector(".navbar-brand"); // <-- 1. Buscamos el logo "Hz"
+  const logo         = document.querySelector(".navbar-brand");
+  const userName     = document.getElementById("userName");
+
   if (haySesion) {
     if (itemLogin)    itemLogin.classList.add("d-none");
     if (itemRegister) itemRegister.classList.add("d-none");
     if (itemLogout)   itemLogout.classList.remove("d-none");
-    if (brandLogo)    brandLogo.href = "Index_logged.html";     // <-- 2. Si hay sesión, lleva a Index_logged.html
+    if (logo)         logo.href = "Index_logged.html";
+    if (userName)     userName.textContent = sesion.nombre || sesion.usuario || "Perfil";
   } else {
     if (itemLogin)    itemLogin.classList.remove("d-none");
     if (itemRegister) itemRegister.classList.remove("d-none");
     if (itemLogout)   itemLogout.classList.add("d-none");
-    if (brandLogo)    brandLogo.href = "index_notLogged.html";            // <-- 3. Si no hay sesión, lleva a index.html
+    if (logo)         logo.href = "index_notLogged.html";
+    if (userName)     userName.textContent = "Perfil";
   }
 }
 
+// Ejecutar en TODAS las páginas al cargar
 document.addEventListener("DOMContentLoaded", actualizarNavbar);
-
