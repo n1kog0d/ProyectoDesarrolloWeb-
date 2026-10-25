@@ -155,3 +155,7 @@ body {
     border-radius: 15px;
     backdrop-filter: blur(5px);
 }
+
+#tarjetaPlaylist{
+    background-color: aquamarine;
+}
