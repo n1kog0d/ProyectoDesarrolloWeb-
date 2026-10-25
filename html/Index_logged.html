@@ -8,6 +8,9 @@
     <title>Hourtz — Inicio</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/estilos.css">
+    <style>
+        [x-cloak] { display: none !important; }
+    </style>
 </head>
 
 <body x-data="homeApp()" x-init="init()">
@@ -16,6 +19,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
         <div class="container-fluid">
             <a class="navbar-brand" href="Index_logged.html">Hz</a>
+            
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -28,18 +32,15 @@
                            x-model="busquedaNav"
                            @keydown.escape="busquedaNav = ''">
 
-                    <!-- Lista desplegable de resultados con Alpine -->
                     <div class="list-group position-absolute w-100 shadow"
                          style="top: 100%; z-index: 1050; max-height: 320px; overflow-y: auto;"
                          x-show="busquedaNav.trim().length > 0">
 
-                        <!-- Si no hay coincidencias -->
                         <div class="list-group-item bg-dark text-secondary small"
                              x-show="resultadosNav.length === 0">
                             Sin resultados para "<span x-text="busquedaNav"></span>"
                         </div>
 
-                        <!-- Resultados encontrados -->
                         <template x-for="c in resultadosNav" :key="c.id">
                             <div class="list-group-item bg-dark text-light border-secondary d-flex align-items-center gap-2">
                                 <img :src="c.imagen" alt="" class="rounded" style="width: 36px; height: 36px; object-fit: cover;">
@@ -83,7 +84,6 @@
                     <li class="nav-item d-none" id="navItemLogout">
                         <a class="nav-link" href="#" onclick="cerrarSesion(event)">Cerrar sesión</a>
                     </li>
-                    <!-- BOTÓN QUE ABRE EL REPRODUCTOR DESLIZANTE -->
                     <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
                         <button class="btn btn-primary btn-sm d-flex align-items-center gap-2"
                                 type="button"
@@ -97,10 +97,9 @@
         </div>
     </nav>
 
-    <!-- CONTENIDO PRINCIPAL ESTILO SPOTIFY -->
+    <!-- CONTENIDO PRINCIPAL -->
     <main class="container py-4">
 
-        <!-- 1. Saludo dinámico con Alpine (x-text) -->
         <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
             <div>
                 <h2 class="fw-bold mb-0" x-text="saludo()"></h2>
@@ -108,7 +107,7 @@
             </div>
         </div>
 
-        <!-- 2. Noticias y Nuevos Lanzamientos -->
+        <!-- Noticias y Nuevos Lanzamientos -->
         <section class="mb-5">
             <h4 class="fw-bold mb-3" style="color: var(--primary);">🔥 Noticias y Nuevos Lanzamientos</h4>
             <div class="row g-3">
@@ -154,19 +153,17 @@
             </div>
         </section>
 
-        <!-- 3. Recomendaciones para ti (Alpine x-for + filtro por género opcional) -->
+        <!-- Recomendaciones -->
         <section class="mb-5">
             <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
                 <h4 class="fw-bold mb-0" style="color: var(--primary);">🎧 Recomendaciones para ti</h4>
                 <a href="catalogo.html" class="text-secondary text-decoration-none small">Ver catálogo completo →</a>
             </div>
 
-            <!-- Estado cargando (x-show) -->
             <div x-show="cargando" class="text-center py-4">
                 <div class="spinner-border text-primary" role="status"></div>
             </div>
 
-            <!-- Tarjetas de canciones con x-for -->
             <div class="row g-3" x-show="!cargando">
                 <template x-for="cancion in catalogo" :key="cancion.id">
                     <div class="col-6 col-md-4 col-lg-2">
@@ -177,7 +174,7 @@
                             <div class="card-body px-1 py-2 d-flex flex-column">
                                 <h6 class="card-title fw-bold mb-1 text-truncate" x-text="cancion.titulo"></h6>
                                 <small class="text-secondary mb-2 text-truncate" x-text="cancion.artista"></small>
-                                
+
                                 <div class="mt-auto d-flex gap-1">
                                     <button class="btn btn-sm btn-primary flex-grow-1"
                                             @click="reproducirCancion(cancion, true)"
@@ -196,19 +193,17 @@
             </div>
         </section>
 
-        <!-- 4. Tus Playlists (Alpine x-for + x-show) -->
+        <!-- Tus Playlists -->
         <section class="mb-5">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h4 class="fw-bold mb-0" style="color: var(--primary);">📂 Tus Playlists</h4>
                 <a href="playlist.html" class="text-secondary text-decoration-none small">Administrar playlists →</a>
             </div>
 
-            <!-- Si no tiene playlists -->
             <div x-show="playlists.length === 0" class="p-3 rounded-3 text-secondary" style="background: var(--panel-bg-suave);">
                 Aún no tienes playlists creadas. <a href="playlist.html" class="text-info">Crea tu primera playlist aquí</a>.
             </div>
 
-                       <!-- Si tiene playlists -->
             <div class="row g-3" x-show="playlists.length > 0">
                 <template x-for="pl in playlists" :key="pl.id">
                     <div class="col-12 col-sm-6 col-lg-3">
@@ -231,10 +226,9 @@
                 </template>
             </div>
         </section>
-
     </main>
 
-    <!-- ============ REPRODUCTOR DESLIZANTE A LA DERECHA (ALPINE + OFFCANVAS) ============ -->
+    <!-- REPRODUCTOR DESLIZANTE -->
     <div class="offcanvas offcanvas-end text-light"
          tabindex="-1"
          id="reproductorLateral"
@@ -251,7 +245,6 @@
 
         <div class="offcanvas-body d-flex flex-column">
 
-            <!-- Carátula e info reactiva con Alpine -->
             <div class="text-center mb-3">
                 <img :src="cancionActual ? cancionActual.imagen : '../img/LogoHourtz.png'"
                      alt="Portada"
@@ -261,7 +254,6 @@
                 <p class="text-secondary small mb-0" x-text="cancionActual ? `${cancionActual.artista} · ${cancionActual.genero}` : '—'"></p>
             </div>
 
-            <!-- Barra de progreso reactiva -->
             <div class="mb-3">
                 <input type="range" class="form-range" min="0" max="100"
                        :value="progreso"
@@ -272,7 +264,6 @@
                 </div>
             </div>
 
-            <!-- Controles con @click de Alpine -->
             <div class="d-flex justify-content-center align-items-center gap-2 mb-4">
                 <button class="btn btn-outline-secondary btn-sm"
                         :class="{ 'activo': aleatorio }"
@@ -290,7 +281,7 @@
                     ⏭
                 </button>
             </div>
-                        <!-- Control de Volumen con Alpine -->
+
             <div class="d-flex align-items-center gap-2 mb-4 px-2">
                 <button class="btn btn-sm text-light p-0 border-0"
                         @click="toggleMute()"
@@ -303,7 +294,6 @@
                 <small class="text-secondary" style="width: 38px; text-align: right;" x-text="`${volumen}%`"></small>
             </div>
 
-            <!-- Lista de reproducción con x-for -->
             <div class="d-flex justify-content-between align-items-center border-bottom border-secondary pb-2 mb-2">
                 <h6 class="fw-bold mb-0" style="color: var(--primary);" x-text="`Cola (${cola.length})`"></h6>
                 <button class="btn btn-outline-danger btn-sm py-0 px-2"
@@ -314,7 +304,6 @@
                 </button>
             </div>
 
-            <!-- Mensaje cuando la cola está vacía (x-show) -->
             <div x-show="cola.length === 0" class="text-center text-secondary my-auto py-4 small">
                 Tu cola está vacía.<br>Agrega canciones con el botón <strong>+ Cola</strong>.
             </div>
@@ -333,14 +322,52 @@
                         <button class="btn btn-sm text-secondary p-0 px-1"
                                 @click.stop="quitarDeCola(idx)"
                                 title="Quitar de la cola">
-                            
+                            ✕
                         </button>
                     </div>
                 </template>
             </div>
         </div>
     </div>
-    <!-- COMPONENTE ALPINE (usa las funciones de backend de funciones.js) -->
+
+    <!-- ============================================================ -->
+    <!-- ZONA SECRETA PARA EL EASTER EGG (Esquina inferior derecha)   -->
+    <!-- ============================================================ -->
+    <div class="position-fixed bottom-0 end-0 m-2" 
+         style="width: 40px; height: 40px; opacity: 0.01; cursor: default; z-index: 1050;"
+         @click="procesarClicSecreto()">
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- EASTER EGG: DOOM OVERLAY                                     -->
+    <!-- ============================================================ -->
+    <div x-show="doomAbierto"
+         x-transition.opacity.duration.300ms
+         x-cloak
+         class="position-fixed top-0 start-0 w-100 h-100"
+         style="z-index: 99999; background: #000;">
+
+        <div class="d-flex flex-column h-100">
+
+            <div class="d-flex justify-content-between align-items-center p-2"
+                 style="background: #1a0000; border-bottom: 2px solid #8b0000;">
+                <h5 class="text-danger m-0 fw-bold">
+                    ☠️ MODO DEMONIO — IDDQD
+                </h5>
+                <small class="text-secondary d-none d-md-block">
+                    Haz clic en el juego para capturar el teclado
+                </small>
+                <button class="btn btn-outline-light btn-sm" @click="cerrarDoom()">
+                    ✖ Salir
+                </button>
+            </div>
+
+            <div id="doom-container" class="flex-grow-1 w-100" style="overflow: hidden;"></div>
+
+        </div>
+    </div>
+
+    <!-- COMPONENTE ALPINE -->
     <script>
         function homeApp() {
             return {
@@ -349,7 +376,7 @@
                 playlists: [],
                 usuario: null,
                 cargando: true,
-                busquedaNav: '', // <-- 1. Texto que escribe el usuario en la barra de arriba
+                busquedaNav: '',
 
                 // Cola y estado del reproductor
                 cola: [],
@@ -361,10 +388,15 @@
                 tiempoActual: 0,
                 duracion: 0,
                 progreso: 0,
-                volumen: 25,       // <-- Volumen inicial (25%)
-                volumenPrevio: 25, // <-- Para recordar el volumen al silenciar
+                volumen: 25,
+                volumenPrevio: 25,
 
-                // <-- 2. Filtra las canciones en vivo según lo que escriba en la barra
+                // --- EASTER EGG: VARIABLES ---
+                clicsSecretos: 0,
+                ultimoClicTiempo: 0,
+                doomAbierto: false,
+                doomIniciado: false,
+
                 get resultadosNav() {
                     const t = this.busquedaNav.toLowerCase().trim();
                     if (!t) return [];
@@ -387,7 +419,7 @@
                         const res = await fetch('../Json/datos.json');
                         const data = await res.json();
                         this.catalogo = data.canciones || [];
-                        this.cola = []; // Al inicio la cola empieza vacía
+                        this.cola = [];
 
                         if (typeof obtenerUsuarioCompleto === 'function') {
                             this.usuario = await obtenerUsuarioCompleto();
@@ -422,7 +454,60 @@
                     return nombre ? `${texto}, ${nombre}!` : `${texto}!`;
                 },
 
-                // 1. Reproducir una canción desde la cola por su posición
+                // --- EASTER EGG: LÓGICA ---
+                procesarClicSecreto() {
+                    const ahora = Date.now();
+                    
+                    if (ahora - this.ultimoClicTiempo > 1500) {
+                        this.clicsSecretos = 0;
+                    }
+                    
+                    this.ultimoClicTiempo = ahora;
+                    this.clicsSecretos++;
+                    
+                    if (this.clicsSecretos === 3) {
+                        this.clicsSecretos = 0;
+                        this.abrirDoom();
+                    }
+                },
+
+                async abrirDoom() {
+                    this.doomAbierto = true;
+
+                    if (this.audio) this.audio.pause();
+                    this.reproduciendo = false;
+
+                    if (this.doomIniciado) return;
+
+                    const contenedor = document.getElementById('doom-container');
+                    if (contenedor) {
+                        contenedor.innerHTML = `
+                            <iframe 
+                                src="https://archive.org/embed/doom1-sw1" 
+                                width="100%" 
+                                height="100%" 
+                                frameborder="0" 
+                                webkitallowfullscreen="true" 
+                                mozallowfullscreen="true" 
+                                allowfullscreen>
+                            </iframe>
+                        `;
+                        this.doomIniciado = true;
+                    }
+                },
+
+                cerrarDoom() {
+                    this.doomAbierto = false;
+                    
+                    const contenedor = document.getElementById('doom-container');
+                    if (contenedor) {
+                        contenedor.innerHTML = '';
+                    }
+                    
+                    this.doomIniciado = false; 
+                },
+
+                // --- REPRODUCTOR ---
                 seleccionarDeCola(idx, abrirMenu = false) {
                     if (idx < 0 || idx >= this.cola.length) return;
 
@@ -438,7 +523,6 @@
                     if (abrirMenu) this.abrirOffcanvas();
                 },
 
-                // 2. Reproducir una canción desde las tarjetas de Recomendaciones
                 reproducirCancion(cancion, abrirMenu = false) {
                     let idx = this.cola.findIndex(c => c.id === cancion.id);
                     if (idx === -1) {
@@ -453,7 +537,6 @@
                     if (cancion) this.reproducirCancion(cancion, abrirMenu);
                 },
 
-                // 3. Agregar una canción al final de la cola
                 agregarACola(cancion) {
                     const yaEsta = this.cola.some(c => c.id === cancion.id);
                     if (!yaEsta) {
@@ -462,7 +545,6 @@
                     this.abrirOffcanvas();
                 },
 
-                // 4. Quitar una canción de la cola
                 quitarDeCola(idx) {
                     this.cola.splice(idx, 1);
                     if (idx < this.indiceActual) {
@@ -474,17 +556,14 @@
                     }
                 },
 
-                // 5. Cargar y reproducir una Playlist del usuario
                 reproducirPlaylist(pl) {
                     let cancionesPl = [];
 
-                    // Si la playlist guarda un array de IDs (ej: [1, 2])
                     if (Array.isArray(pl.canciones)) {
                         cancionesPl = pl.canciones
                             .map(id => this.catalogo.find(c => c.id === id))
                             .filter(Boolean);
-                    } 
-                    // Si la playlist es de prueba en users.json y tiene un número (ej: canciones: 6)
+                    }
                     else if (typeof pl.canciones === 'number' && pl.canciones > 0) {
                         cancionesPl = this.catalogo.slice(0, pl.canciones);
                     }
@@ -496,7 +575,7 @@
 
                     this.cola = cancionesPl;
                     this.nombreCola = pl.nombre;
-                    this.indiceActual = -1; // Reiniciar para que arranque desde la primera
+                    this.indiceActual = -1;
                     this.seleccionarDeCola(0, true);
                 },
 
@@ -559,7 +638,6 @@
 
                 cambiarVolumen() {
                     if (this.audio) {
-                        // En HTML5 Audio el volumen va de 0.0 a 1.0, por eso dividimos por 100
                         this.audio.volume = this.volumen / 100;
                     }
                 },
@@ -604,4 +682,4 @@
     <script src="../javascript/funciones.js"></script>
 </body>
 
-</html> 
+</html>
