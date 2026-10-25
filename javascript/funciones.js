@@ -403,7 +403,7 @@ async function mostrarAlertalogin(event) {
   const toastHTML = document.getElementById("alertaExitologin");
   if (toastHTML) new bootstrap.Toast(toastHTML).show();
 
-  setTimeout(() => { window.location.href = "index.html"; }, 2000);
+  setTimeout(() => { window.location.href = "index_logged.html"; }, 2000);
 }
 
 function mostrarAlertaregister(event) {
@@ -470,15 +470,17 @@ function actualizarNavbar() {
   const itemLogin    = document.getElementById("navItemLogin");
   const itemRegister = document.getElementById("navItemRegister");
   const itemLogout   = document.getElementById("navItemLogout");
-
+  const brandLogo    = document.querySelector(".navbar-brand"); // <-- 1. Buscamos el logo "Hz"
   if (haySesion) {
     if (itemLogin)    itemLogin.classList.add("d-none");
     if (itemRegister) itemRegister.classList.add("d-none");
     if (itemLogout)   itemLogout.classList.remove("d-none");
+    if (brandLogo)    brandLogo.href = "Index_logged.html";     // <-- 2. Si hay sesión, lleva a Index_logged.html
   } else {
     if (itemLogin)    itemLogin.classList.remove("d-none");
     if (itemRegister) itemRegister.classList.remove("d-none");
     if (itemLogout)   itemLogout.classList.add("d-none");
+    if (brandLogo)    brandLogo.href = "index.html";            // <-- 3. Si no hay sesión, lleva a index.html
   }
 }
 

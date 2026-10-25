@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="../img/LogoHourtz.png">
+    <title>Hourtz — Inicio</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/estilos.css">
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="Index_logged.html">Hz</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <form class="d-flex mt-3 mt-lg-0 position-relative" role="search" onsubmit="return false;">
+                    <input id="buscador" class="form-control me-2" type="search"
+                           placeholder="Buscar canción o artista" autocomplete="off">
+                    <div id="resultadosBusqueda"
+                         class="list-group position-absolute w-100 shadow"
+                         style="top: 100%; z-index: 1050; max-height: 320px; overflow-y: auto; display: none;"></div>
+                </form>
+
+                <ul class="navbar-nav ms-auto align-items-lg-center">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="Index_logged.html">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="playlist.html">Playlist</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="catalogo.html">Catálogo</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="perfil.html" id="userName">Perfil</a>
+                    </li>
+                    <li class="nav-item d-none" id="navItemLogout">
+                        <a class="nav-link" href="#" onclick="cerrarSesion(event)">Cerrar sesión</a>
+                    </li>
+                    <!-- BOTÓN QUE ABRE EL REPRODUCTOR DESLIZANTE -->
+                    <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
+                        <button class="btn btn-primary btn-sm d-flex align-items-center gap-2"
+                                type="button"
+                                data-bs-toggle="offcanvas"
+                                data-bs-target="#reproductorLateral"
+                                aria-controls="reproductorLateral">
+                            <span>🎵 Reproductor</span>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+        <!-- CONTENIDO PRINCIPAL ESTILO SPOTIFY -->
+    <main class="container py-4">
+
+        <!-- 1. Saludo dinámico y Botón rápido al reproductor -->
+        <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+            <div>
+                <h2 class="fw-bold mb-0" id="saludoUsuario">¡Buenas noches!</h2>
+                <p class="text-secondary mb-0">Esto es lo que está sonando hoy en Hourtz</p>
+            </div>
+        </div>
+
+        <!-- 2. Sección de Noticias y Lanzamientos Nuevos -->
+        <section class="mb-5">
+            <h4 class="fw-bold mb-3" style="color: var(--primary);">🔥 Noticias y Nuevos Lanzamientos</h4>
+            <div class="row g-3">
+                <!-- Banner principal de novedad -->
+                <div class="col-12 col-lg-7">
+                    <div class="p-4 rounded-4 h-100 d-flex flex-column justify-content-between"
+                         style="background: linear-gradient(135deg, var(--nav-bg), rgba(77, 49, 216, 0.4)); border: 1px solid var(--borde-claro);">
+                        <div>
+                            <span class="badge bg-info text-dark mb-2">NUEVO SINGLE</span>
+                            <h3 class="fw-bold">Senda Bellakona — Sinaka</h3>
+                            <p class="text-light opacity-75">
+                                El nuevo éxito del género urbano ya está disponible en Hourtz. Escúchalo ahora y agrégalo a tus playlists favoritas.
+                            </p>
+                        </div>
+                        <div class="mt-3">
+                            <button class="btn btn-primary btn-reproducir-cancion" data-id="2">
+                                ▶ Escuchar ahora
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Columna derecha con 2 noticias breves -->
+                <div class="col-12 col-lg-5 d-flex flex-column gap-3">
+                    <div class="p-3 rounded-4 d-flex align-items-center gap-3"
+                         style="background-color: var(--panel-bg-suave); border: 1px solid var(--borde-claro);">
+                        <img src="../img/queen.jpg" alt="Queen" class="rounded-3" style="width: 70px; height: 70px; object-fit: cover;">
+                        <div>
+                            <span class="badge bg-secondary mb-1">REMASTERIZADO</span>
+                            <h6 class="fw-bold mb-1">Especial de Queen en alta calidad</h6>
+                            <small class="text-secondary">Bohemian Rhapsody y Don't Stop Me Now vuelven al top semanal.</small>
+                        </div>
+                    </div>
+
+                    <div class="p-3 rounded-4 d-flex align-items-center gap-3"
+                         style="background-color: var(--panel-bg-suave); border: 1px solid var(--borde-claro);">
+                        <img src="../img/ElHuasoYLaLavandera.jpg" alt="Folklore" class="rounded-3" style="width: 70px; height: 70px; object-fit: cover;">
+                        <div>
+                            <span class="badge bg-secondary mb-1">TENDENCIA CHILE</span>
+                            <h6 class="fw-bold mb-1">Entremares lidera el Folklore</h6>
+                            <small class="text-secondary">"Llorando Ausencia" suma miles de reproducciones este mes.</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Recomendaciones para ti (Se llena dinámicamente desde datos.json) -->
+        <section class="mb-5">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="fw-bold mb-0" style="color: var(--primary);">🎧 Recomendaciones para ti</h4>
+                <a href="catalogo.html" class="text-secondary text-decoration-none small">Ver catálogo completo →</a>
+            </div>
+            <div class="row g-3" id="contenedorRecomendaciones">
+                <!-- JS insertará las tarjetas de canciones aquí -->
+            </div>
+        </section>
+
+        <!-- 4. Tus Playlists Rápidas -->
+        <section class="mb-5">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="fw-bold mb-0" style="color: var(--primary);">📂 Tus Playlists</h4>
+                <a href="playlist.html" class="text-secondary text-decoration-none small">Administrar playlists →</a>
+            </div>
+            <div class="row g-3" id="contenedorPlaylistsHome">
+                <!-- JS insertará las playlists del usuario aquí -->
+            </div>
+        </section>
+
+    </main>
+        <!-- ============ REPRODUCTOR DESLIZANTE A LA DERECHA (OFFCANVAS) ============ -->
+    <div class="offcanvas offcanvas-end text-light"
+         tabindex="-1"
+         id="reproductorLateral"
+         data-bs-scroll="true"
+         data-bs-backdrop="false"
+         aria-labelledby="reproductorLateralLabel"
+         style="background-color: var(--background); border-left: 1px solid var(--primary); width: 360px;">
+
+        <div class="offcanvas-header border-bottom border-secondary">
+            <h5 class="offcanvas-title fw-bold" id="reproductorLateralLabel" style="color: var(--primary);">
+                🎵 Reproductor Hourtz
+            </h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+
+        <div class="offcanvas-body d-flex flex-column">
+
+            <!-- Carátula e info de la canción actual -->
+            <div class="text-center mb-3">
+                <img id="playerImagen" src="../img/LogoHourtz.png" alt="Portada"
+                     class="rounded-4 shadow mb-3"
+                     style="width: 180px; height: 180px; object-fit: cover; border: 2px solid var(--borde-claro);">
+                <h5 id="playerTitulo" class="fw-bold mb-0">Selecciona una canción</h5>
+                <p id="playerArtista" class="text-secondary small mb-0">—</p>
+            </div>
+
+            <!-- Barra de progreso de la canción -->
+            <div class="mb-3">
+                <input type="range" id="playerProgreso" class="form-range" value="0" min="0" max="100">
+                <div class="d-flex justify-content-between small text-secondary">
+                    <span id="playerTiempoActual">0:00</span>
+                    <span id="playerDuracion">0:00</span>
+                </div>
+            </div>
+
+            <!-- Controles: Aleatorio, Anterior, Play/Pausa, Siguiente -->
+            <div class="d-flex justify-content-center align-items-center gap-2 mb-4">
+                <button id="btnShuffle" class="btn btn-outline-secondary btn-sm" title="Modo aleatorio">
+                    🔀
+                </button>
+                <button id="btnPrev" class="btn btn-outline-light btn-sm" title="Canción anterior">
+                    ⏮
+                </button>
+                <button id="btnPlayPause" class="btn btn-primary px-3 py-2" title="Reproducir / Pausar">
+                    ▶
+                </button>
+                <button id="btnNext" class="btn btn-outline-light btn-sm" title="Siguiente canción">
+                    ⏭
+                </button>
+            </div>
+
+            <!-- Lista / Cola de reproducción -->
+            <h6 class="fw-bold border-bottom border-secondary pb-2 mb-2" style="color: var(--primary);">
+                Cola de reproducción
+            </h6>
+            <div id="playerListaCola" class="list-group list-group-flush overflow-y-auto flex-grow-1" style="max-height: 260px;">
+                <!-- JS pintará aquí la lista de canciones para elegir -->
+            </div>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../javascript/funciones.js"></script>
+</body>
+
+</html>
