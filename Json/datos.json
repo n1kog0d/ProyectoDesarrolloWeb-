@@ -36,21 +36,75 @@
     },
     {
       "id": 5,
-      "titulo": "Don't Stop Me Now",
-      "artista": "Queen",
-      "genero": "Rock",
-      "audio": "../audios/rock.mp3",
-      "imagen": "../img/queen.jpg",
-      "anio": 1978
+      "titulo": "Fukashigi no carte",
+      "artista": "Bunny Girl",
+      "genero": "Anison",
+      "audio": "../audios/anison.mp3",
+      "imagen": "../img/anison.webp",
+      "anio": 2018
     },
     {
       "id": 6,
-      "titulo": "Tusa",
-      "artista": "Karol G & Nicki Minaj",
-      "genero": "Reggaeton",
-      "audio": "../audios/reggaeton.mp3",
-      "imagen": "../img/reggaeton.webp",
-      "anio": 2019
+      "titulo": "Loca",
+      "artista": "Chico Trujillo",
+      "genero": "Cumbia Chilena",
+      "audio": "../audios/cumbia.mp3",
+      "imagen": "../img/chicotrujullo.webp",
+      "anio": 2008
+    }, 
+    {
+      "id": 7,
+      "titulo": "Tornado of Souls",
+      "artista": "Megadeth",
+      "genero": "Trash Metal",
+      "audio": "../audios/metal.mp3",
+      "imagen": "../img/megadeth.jpg",
+      "anio": 1990
+    }, 
+    {
+      "id": 8,
+      "titulo": "Smooth Criminal",
+      "artista": "Michael Jackson",
+      "genero": "Pop",
+      "audio": "../audios/pop.mp3",
+      "imagen": "../img/mjackson.jpg",
+      "anio": 1998
+    }, 
+    {
+      "id": 9,
+      "titulo": "Dancing Queen",
+      "artista": "Abba",
+      "genero": "Música Disco",
+      "audio": "../audios/musicadisco.mp3",
+      "imagen": "../img/musicadisco.jpg",
+      "anio": 1976
+    }, 
+    {
+      "id": 10,
+      "titulo": "Lovers Rock",
+      "artista": "TV Girl",
+      "genero": "Indie pop",
+      "audio": "../audios/indiepop.mp3",
+      "imagen": "../img/indiepop.webp",
+      "anio": 2008
+    }, 
+    {
+      "id": 11,
+      "titulo": "Unknown",
+      "artista": "X",
+      "genero": "Rap",
+      "audio": "../audios/rap.mp3",
+      "imagen": "../img/kingV.jpg",
+      "anio": 2000
+    }, 
+    {
+      "id": 12,
+      "titulo": "X",
+      "artista": "Unknown",
+      "genero": "Jazz",
+      "audio": "../audios/jazz.mp3",
+      "imagen": "../img/sinatra.jpg",
+      "anio": 2000
     }
   ], 
   "generos": [
