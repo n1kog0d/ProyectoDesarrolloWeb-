@@ -197,7 +197,7 @@ body {
 }
 
 /* Botón de modo aleatorio cuando está activado */
-#btnShuffle.activo {
+.btn.activo {
     background-color: var(--primary);
     color: var(--btn-text);
     border-color: var(--primary);
