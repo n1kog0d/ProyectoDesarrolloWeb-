@@ -74,13 +74,12 @@
         </div>
     </main> 
     <script> 
-/* ============================================================
-   PLAYLISTS — crear, ver, agregar/quitar canciones, eliminar
-   ============================================================ */
+
+/* PLAYLISTS — crear, ver, agregar/quitar canciones, eliminar */
 
 let playlistAbiertaId = null;
 
-// --- Cargar catálogo de canciones (con caché local) ---
+// Cargar catálogo de canciones (con caché local) 
 let _catalogoCache = null;
 async function cargarCatalogo() {
   if (datosCatalogo && datosCatalogo.length > 0) return datosCatalogo;
@@ -97,7 +96,7 @@ async function cargarCatalogo() {
   }
 }
 
-// --- Utilidades ---
+// Utilidades 
 function contarCanciones(playlist) {
   if (Array.isArray(playlist.canciones)) return playlist.canciones.length;
   if (typeof playlist.canciones === "number") return playlist.canciones; // legado
@@ -131,7 +130,7 @@ async function guardarPlaylistsUsuario(playlists) {
   return true;
 }
 
-// --- Render principal ---
+// Render principal 
 async function pintarPlaylists() {
   const contenedor = document.getElementById("contenedorPlaylists");
   const vacio = document.getElementById("sinPlaylists");
@@ -201,7 +200,7 @@ async function pintarPlaylists() {
   });
 }
 
-// --- Crear ---
+// Crear 
 async function crearPlaylist() {
   const input = document.getElementById("inputNombrePlaylist");
   const nombre = input ? input.value.trim() : "";
@@ -226,7 +225,7 @@ async function crearPlaylist() {
   pintarPlaylists();
 }
 
-// --- Ver detalle ---
+// Ver detalle
 async function abrirPlaylist(id) {
   const usuario = await obtenerUsuarioCompleto();
   if (!usuario) return;
@@ -283,7 +282,7 @@ async function pintarCancionesDePlaylist(playlist) {
   });
 }
 
-// --- Eliminar playlist ---
+// Eliminar playlist
 async function eliminarPlaylist(id) {
   const usuario = await obtenerUsuarioCompleto();
   if (!usuario) return;
@@ -300,7 +299,7 @@ async function eliminarPlaylist(id) {
   pintarPlaylists();
 }
 
-// --- Agregar / quitar canciones ---
+// Agregar / quitar canciones 
 async function agregarCancionAPlaylist(cancionId) {
   if (playlistAbiertaId === null) return;
 
@@ -348,7 +347,7 @@ async function quitarCancionDePlaylist(cancionId) {
   pintarPlaylists();
 }
 
-// --- Bindings de la página ---
+// Bindings de la página
 document.addEventListener("DOMContentLoaded", () => {
 
   // Botón crear
@@ -422,7 +421,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     </script>
 
-    <!-- ============ MODAL CREAR PLAYLIST ============ -->
+    <!--MODAL CREAR PLAYLIST-->
     <div class="modal fade" id="modalCrearPlaylist" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content text-light"
@@ -445,7 +444,7 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
     </div>
 
-    <!-- ============ MODAL VER PLAYLIST ============ -->
+    <!--MODAL VER PLAYLIST-->
     <div class="modal fade" id="modalVerPlaylist" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content text-light"

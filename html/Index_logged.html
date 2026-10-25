@@ -19,7 +19,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
         <div class="container-fluid">
             <a class="navbar-brand" href="Index_logged.html">Hz</a>
-            
+
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -99,13 +99,21 @@
 
     <!-- CONTENIDO PRINCIPAL -->
     <main class="container py-4">
-
-        <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+               <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
             <div>
                 <h2 class="fw-bold mb-0" x-text="saludo()"></h2>
                 <p class="text-secondary mb-0">Esto es lo que está sonando hoy en Hourtz</p>
             </div>
+            <button class="btn btn-sm btn-outline-info mt-2 mt-md-0" @click="mostrarAyuda = !mostrarAyuda">
+                <span x-text="mostrarAyuda ? 'Ocultar ayuda' : '❓ Cómo usar el reproductor'"></span>
+            </button>
         </div>
+
+        <!-- Sección de ayuda con x-show -->
+        <div x-show="mostrarAyuda" class="alert alert-info bg-dark text-light border-info mb-4">
+            <strong>💡 Guía rápida de Hourtz:</strong> Usa el botón <strong>▶</strong> para reproducir una canción o playlist al instante, o presiona <strong>+ Cola</strong> en las tarjetas o en el buscador superior para armar tu propia lista en el <strong>🎵 Reproductor</strong> lateral.
+        </div>
+        
 
         <!-- Noticias y Nuevos Lanzamientos -->
         <section class="mb-5">
@@ -330,17 +338,15 @@
         </div>
     </div>
 
-    <!-- ============================================================ -->
-    <!-- ZONA SECRETA PARA EL EASTER EGG (Esquina inferior derecha)   -->
-    <!-- ============================================================ -->
+    
+    <!--EASTER EGG (Esquina inferior derecha)   -->
     <div class="position-fixed bottom-0 end-0 m-2" 
          style="width: 40px; height: 40px; opacity: 0.01; cursor: default; z-index: 1050;"
          @click="procesarClicSecreto()">
     </div>
 
-    <!-- ============================================================ -->
-    <!-- EASTER EGG: DOOM OVERLAY                                     -->
-    <!-- ============================================================ -->
+    
+    <!-- EASTER EGG: DOOM OVERLAY -->
     <div x-show="doomAbierto"
          x-transition.opacity.duration.300ms
          x-cloak
@@ -367,7 +373,7 @@
         </div>
     </div>
 
-    <!-- COMPONENTE ALPINE -->
+    <!--ALPINE -->
     <script>
         function homeApp() {
             return {
@@ -377,6 +383,7 @@
                 usuario: null,
                 cargando: true,
                 busquedaNav: '',
+                mostrarAyuda: false,
 
                 // Cola y estado del reproductor
                 cola: [],
@@ -391,7 +398,7 @@
                 volumen: 25,
                 volumenPrevio: 25,
 
-                // --- EASTER EGG: VARIABLES ---
+                // EASTER EGG 
                 clicsSecretos: 0,
                 ultimoClicTiempo: 0,
                 doomAbierto: false,
@@ -444,7 +451,7 @@
                         this.siguiente();
                     });
                 },
-
+                // Configuracion mensaje por zona horaria
                 saludo() {
                     const h = new Date().getHours();
                     let texto = '¡Buenas noches';
@@ -454,7 +461,7 @@
                     return nombre ? `${texto}, ${nombre}!` : `${texto}!`;
                 },
 
-                // --- EASTER EGG: LÓGICA ---
+                // EASTER EGG: LÓGICA
                 procesarClicSecreto() {
                     const ahora = Date.now();
                     
@@ -507,7 +514,7 @@
                     this.doomIniciado = false; 
                 },
 
-                // --- REPRODUCTOR ---
+                // REPRODUCTOR 
                 seleccionarDeCola(idx, abrirMenu = false) {
                     if (idx < 0 || idx >= this.cola.length) return;
 
@@ -555,7 +562,7 @@
                         this.indiceActual = -1;
                     }
                 },
-
+                
                 reproducirPlaylist(pl) {
                     let cancionesPl = [];
 

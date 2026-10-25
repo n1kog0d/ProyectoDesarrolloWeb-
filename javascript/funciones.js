@@ -1,8 +1,5 @@
-// ============================================================
-// funciones.js — Hourtz
-// ============================================================
 
-// ---------- Registro: validación en tiempo real de contraseñas ----------
+// Registro: validación en tiempo real de contraseñas 
 const contraseña = document.getElementById("contraseña");
 const Confcontraseña = document.getElementById("contraseñaC");
 const alerta = document.getElementById("alerta");
@@ -20,7 +17,7 @@ if (Confcontraseña && contraseña) {
   });
 }
 
-// ---------- Reproductor de audio ----------
+// Reproductor de audio 
 let currentAudio = null;
 let currentButton = null;
 let currentAudioSrc = null;
@@ -109,7 +106,6 @@ if (usuarioGuardado != null) {
 
 // ============================================================
 // PERFIL DINÁMICO
-// ============================================================
 
 let usuarioActual = null;
 
@@ -205,9 +201,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   pintarPerfil(usuario);
 });
 
-// ============================================================
+
 // BUSCADOR
-// ============================================================
+
 const RUTA_JSON = '../Json/datos.json';
 let datosCatalogo = [];
 
@@ -288,15 +284,13 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-/* ============================================================
-   AUTENTICACIÓN — lee users.json + localStorage
-   ============================================================ */
+// AUTENTICACIÓN — lee users.json + localStorage
 
 const RUTA_USERS      = "../Json/users.json";
 const CLAVE_SESION    = "usuarioActivo";
 const CLAVE_LOCAL     = "usuariosLocales";
 
-// ---------- Carga de usuarios ----------
+// Carga de usuarios 
 async function cargarUsuariosJSON() {
   try {
     const res = await fetch(RUTA_USERS);
@@ -309,7 +303,7 @@ async function cargarUsuariosJSON() {
   }
 }
 
-// ⚠️ localStorage, NO sessionStorage (sobrevive al cerrar el navegador)
+// localStorage, NO sessionStorage (sobrevive al cerrar el navegador)
 function obtenerUsuariosLocales() {
   return JSON.parse(localStorage.getItem(CLAVE_LOCAL) || "[]");
 }
@@ -327,13 +321,13 @@ async function obtenerTodosLosUsuarios() {
   return [...json, ...locales];
 }
 
-// ---------- LOGIN ----------
+// LOGIN
 async function mostrarAlertalogin(event) {
   event.preventDefault();
 
   const emailInput = document.getElementById("email");
   const passInput = document.getElementById("password")
-                 || document.querySelector('input[type="password"]');
+  || document.querySelector('input[type="password"]');
 
   if (!emailInput || !passInput) {
     alert("No se encontraron los campos del formulario.");
@@ -370,7 +364,10 @@ async function mostrarAlertalogin(event) {
   setTimeout(() => { window.location.href = "Index_logged.html"; }, 1500);
 }
 
-// ---------- REGISTRO ----------
+
+
+// REGISTRO 
+
 async function mostrarAlertaregister(event) {
   event.preventDefault();
 
@@ -430,7 +427,7 @@ async function mostrarAlertaregister(event) {
 
   guardarUsuarioLocal(nuevoUsuario);
 
-  // ⚠️ Crear sesión automáticamente (esto es lo que faltaba)
+  // Crear sesión automáticamente (esto es lo que faltaba)
   const sesion = {
     id: nuevoUsuario.id,
     nombre: nuevoUsuario.nombre,
@@ -449,7 +446,7 @@ async function mostrarAlertaregister(event) {
   setTimeout(() => { window.location.href = "Index_logged.html"; }, 1500);
 }
 
-// ---------- SESIÓN ----------
+// SESIÓN 
 function obtenerSesion() {
   const raw = sessionStorage.getItem(CLAVE_SESION);
   return raw ? JSON.parse(raw) : null;
@@ -462,7 +459,7 @@ function cerrarSesion(event) {
   window.location.href = "index_notLogged.html";
 }
 
-// ---------- NAVBAR DINÁMICA ----------
+//  NAVBAR DINÁMICA 
 function actualizarNavbar() {
   const sesion = obtenerSesion();
   const haySesion = !!sesion;
