@@ -26,7 +26,7 @@ En esta segunda etapa, el proyecto separa los datos estáticos en archivos JSON 
   Se utiliza definiendo funciones de componente (`catalogoApp()`, `homeApp()`, `perfilApp()`) vinculadas con `x-data` y `x-init="init()"` en la etiqueta `<body>`.
 
 ## 5. Estructura General de Carpetas
-
+'''text
 ProyectoDesarrolloWeb-/
 ├── audios/                 # Pistas de audio (.mp3) utilizadas por el catálogo y el reproductor
 ├── css/
@@ -46,7 +46,7 @@ ProyectoDesarrolloWeb-/
 │   ├── datos.json          # Catálogo estático de canciones y géneros musicales
 │   └── users.json          # Usuarios de prueba predefinidos con sus preferencias y playlists
 └── README.md               # Documentación del proyecto
-
+'''
 
 ## 6. Funcionalidades Agregadas en la Tarea 2
 1. **Catálogo Reactivo con Alpine.js (`catalogo.html`):** Carga asincrónica de los 12 géneros musicales desde `Json/datos.json` con `fetch()`, renderizado dinámico con `x-for` y `:key`, filtrado instantáneo con `x-model="busqueda"`, reproducción de audio reactiva y manejo visual de estados de carga (`cargando`), error (`error`) y búsqueda sin resultados.
