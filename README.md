@@ -26,7 +26,7 @@ En esta segunda etapa, el proyecto separa los datos estáticos en archivos JSON 
   Se utiliza definiendo funciones de componente (`catalogoApp()`, `homeApp()`, `perfilApp()`) vinculadas con `x-data` y `x-init="init()"` en la etiqueta `<body>`.
 
 ## 5. Estructura General de Carpetas
-'''text
+'''json
 ProyectoDesarrolloWeb-/
 ├── audios/                 # Pistas de audio (.mp3) utilizadas por el catálogo y el reproductor
 ├── css/
